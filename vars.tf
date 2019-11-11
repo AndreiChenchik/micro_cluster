@@ -31,5 +31,5 @@ variable "node_type" {
 }
 
 variable "node_count" {
-  default = ${file("node_count")}
+  default = file("node_count")
 }
