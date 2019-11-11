@@ -55,10 +55,15 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 # Query my Terraform service account from GCP
 data "google_client_config" "current" {}
 
+data "google_container_cluster" "my-gke-cluster" {
+  name = "my-gke-cluster"
+  location = var.region
+}
+
 provider "kubernetes" {
   load_config_file = false
-  host = "https://${google_container_cluster.primary.endpoint}"
-  cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
+  host = "https://${data.google_container_cluster.my-gke-cluster.endpoint}"
+  cluster_ca_certificate = "${base64decode(data.google_container_cluster.my-gke-cluster.master_auth[0].cluster_ca_certificate)}"
   token = "${data.google_client_config.current.access_token}"
 }
 
