@@ -29,11 +29,10 @@ resource "kubernetes_pod" "nginx" {
       port {
         container_port = 80
       }
-    }
-    
-    volume_mount {
-      mount_path = "/test"
-      name = "test-volume"
+      volume_mount {
+        mount_path = "/test"
+        name = "test-volume"
+      }
     }
     
     volume {
