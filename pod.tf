@@ -2,6 +2,16 @@ locals {
   action = local.node_count != 1 ? "Container will be destroyed: http://" : "Container available: http://"
 }
 
+resource "google_dns_record_set" "nginx" {
+  name = "nginx-example.chenchik.me"
+  type = "A"
+  ttl  = 60
+
+  managed_zone = "chenchik-me-zone"
+
+  rrdatas = ["${kubernetes_service.nginx-lb[0].attributes.load_balancer_ingress.ip}"]
+}
+
 resource "kubernetes_pod" "nginx" {
   count = local.node_count != 1 ? 0 : 1
   
