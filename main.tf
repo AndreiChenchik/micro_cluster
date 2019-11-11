@@ -1,6 +1,7 @@
 locals {
   node_count = tonumber(chomp(file("${path.module}/node_count")))
   node_type = chomp(file("${path.module}/node_type"))
+  container_path = local.node_count != 1 ? "./pod/empty" : "./pod"
 }
 
 data "http" "report_terraforming" {
@@ -68,8 +69,7 @@ provider "kubernetes" {
 
 
 module "container" {
-  source = "${local.node_count != 1 ? "./pod/empty" : "./pod"}"
-  #source = "./pod"
+  source = local.container_path
   bot_auth = var.bot_auth
   bot_chatid = var.bot_chatid
 }
