@@ -30,6 +30,18 @@ resource "kubernetes_pod" "nginx" {
         container_port = 80
       }
     }
+    
+    volume_mount {
+      mount_path = "/test"
+      name = "test-volume"
+    }
+    
+    volume {
+      name= "test-volume"
+      gce_persistent_disk {
+        pd_name = "disk-2"
+      }
+    }
   }
 }
 
