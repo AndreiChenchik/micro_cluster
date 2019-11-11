@@ -48,7 +48,7 @@ resource "kubernetes_service" "nginx-name2" {
   
   depends_on = [kubernetes_pod.nginx]
   metadata {
-    name = "nginx-example"
+    name = "nginx-example2"
   }
   spec {
     selector = {
