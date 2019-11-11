@@ -1,3 +1,9 @@
+variable "bot_auth" {
+}
+
+variable "bot_chatid" {
+}
+
 resource "kubernetes_pod" "nginx" {
   metadata {
     name = "nginx-example"
