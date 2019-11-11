@@ -13,8 +13,6 @@ resource "kubernetes_pod" "nginx" {
     }
   }
   spec {
-    hostname = "busybox-1"
-    subdomain = "chenchik.me"
     container {
       image = "nginx:1.7.8"
       name  = "example"
