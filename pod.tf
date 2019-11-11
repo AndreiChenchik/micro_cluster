@@ -3,7 +3,7 @@ locals {
 }
 
 resource "google_dns_record_set" "nginx" {
-  name = "nginx-example.chenchik.me"
+  name = "nginx-example.chenchik.me."
   type = "A"
   ttl  = 60
 
