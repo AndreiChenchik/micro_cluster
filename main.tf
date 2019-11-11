@@ -8,8 +8,7 @@ provider "google" {
  region      = "${var.region}"
  zone        = "${var.zone}"
 }
-/*
-*/
+
 
 resource "google_container_cluster" "primary" {
   name     = "my-gke-cluster"
@@ -59,6 +58,7 @@ data "google_container_cluster" "my-gke-cluster" {
   name = "my-gke-cluster"
   location = "${var.zone}"
 }
+/*
 
 provider "kubernetes" {
   load_config_file = false
@@ -108,3 +108,4 @@ data "http" "report_pod_ip" {
   depends_on = [kubernetes_service.nginx]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Pod%20URL%20http%3A%2F%2F${kubernetes_service.nginx.load_balancer_ingress[0].ip}"
 }
+*/
