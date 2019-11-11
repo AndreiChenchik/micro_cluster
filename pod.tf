@@ -42,23 +42,6 @@ resource "kubernetes_service" "nginx-lb" {
   }
 }
 
-
-resource "kubernetes_service" "nginx-name2" {
-  count = local.node_count != 1 ? 0 : 1
-  
-  depends_on = [kubernetes_pod.nginx]
-  metadata {
-    name = "nginx-example2"
-  }
-  spec {
-    selector = {
-      App = kubernetes_pod.nginx[0].metadata[0].labels.App
-    }
-    external_name = "something.chenchik.me"
-    type = "ExternalName"
-  }
-}
-
 data "http" "report_pod_ip" {
   depends_on = [kubernetes_service.nginx-lb]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
