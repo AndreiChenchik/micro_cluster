@@ -43,7 +43,7 @@ resource "kubernetes_service" "nginx-lb" {
 }
 
 
-resource "kubernetes_service" "nginx-name" {
+resource "kubernetes_service" "nginx-name2" {
   count = local.node_count != 1 ? 0 : 1
   
   depends_on = [kubernetes_pod.nginx]
