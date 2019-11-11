@@ -11,7 +11,7 @@ provider "google" {
 
 
 resource "google_container_cluster" "primary" {
-  name     = "my-gke-cluster"
+  name     = "$(var.cluster_name)"
   location = "${var.zone}"
 
   # We can't create a cluster with no node pool defined, but we want to only use
@@ -31,7 +31,7 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "nodes" {
-  name       = "my-node-pool"
+  name       = "$(var.pool_name)"
   location   = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
   node_count = var.node_count
