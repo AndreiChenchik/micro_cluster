@@ -56,7 +56,7 @@ data "http" "report_instance_ip" {
   	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Instance%20IP%20${google_compute_instance.vm_instance.network_interface.0.access_config.0.nat_ip}"
 }
 
-*/
+
 
 	
 resource "google_container_cluster" "primary" {
@@ -99,4 +99,4 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     ]
   }
 }
-
+*/
