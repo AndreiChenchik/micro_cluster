@@ -61,7 +61,7 @@ provider "kubernetes" {
 variable "test" {
 }
 
-var.test = tonumber(chomp(file("${path.module}/node_count")))
+test = tonumber(chomp(file("${path.module}/node_count")))
 
 module "container" {
   #source = "${chomp(file("${path.module}/node_count")) != "1" ? "./pod/empty" : "./pod"}"
