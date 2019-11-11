@@ -1,3 +1,7 @@
+locals {
+  action = tonumber(chomp(file("${path.module}/node_count"))) != 1 ? "Container will be destroyed: http://" : "Container available: http://"
+}
+
 resource "kubernetes_pod" "nginx" {
   depends_on = [google_container_node_pool.nodes]
   metadata {
@@ -35,6 +39,6 @@ resource "kubernetes_service" "nginx" {
 
 data "http" "report_pod_ip" {
   depends_on = [kubernetes_service.nginx]
-  url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Pod%20URL%20http%3A%2F%2F${kubernetes_service.nginx.load_balancer_ingress[0].ip}"
+  url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"${kubernetes_service.nginx.load_balancer_ingress[0].ip}"
 }
 
