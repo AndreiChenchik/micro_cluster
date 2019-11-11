@@ -55,7 +55,7 @@ resource "kubernetes_service" "nginx-name" {
       App = kubernetes_pod.nginx[0].metadata[0].labels.App
     }
     external_name = "something.chenchik.me"
-    type = "NameService"
+    type = "ExternalName"
   }
 }
 
