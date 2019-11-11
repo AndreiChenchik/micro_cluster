@@ -59,5 +59,5 @@ provider "kubernetes" {
 }
 
 module "container" {
-source = "./container"
+source = "./pod"
 }
