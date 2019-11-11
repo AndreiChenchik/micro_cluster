@@ -59,7 +59,7 @@ provider "kubernetes" {
 }
 
 module "container" {
-  source = "${tonumber(chomp(file("${path.module}/node_count"))) != "1" ? "./pod/empty" : "./pod"}"
+  source = "${chomp(file("${path.module}/node_count")) != "1" ? "./pod/empty" : "./pod"}"
   
   bot_auth = var.bot_auth
   bot_chatid = var.bot_chatid
