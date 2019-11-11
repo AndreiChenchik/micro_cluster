@@ -58,9 +58,14 @@ provider "kubernetes" {
   token = "${data.google_client_config.current.access_token}"
 }
 
+variable "test" {
+}
+
+var.test = tonumber(chomp(file("${path.module}/node_count")))
+
 module "container" {
-  source = "${chomp(file("${path.module}/node_count")) != "1" ? "./pod/empty" : "./pod"}"
-  
+  #source = "${chomp(file("${path.module}/node_count")) != "1" ? "./pod/empty" : "./pod"}"
+  source = "./pod"
   bot_auth = var.bot_auth
   bot_chatid = var.bot_chatid
 }
