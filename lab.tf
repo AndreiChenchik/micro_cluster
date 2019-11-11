@@ -90,3 +90,24 @@ provider "kubernetes" {
   cluster_ca_certificate = "${base64decode(module.gke_cluster.cluster_ca_certificate)}"
   token = "${data.google_client_config.current.access_token}"
 }
+
+resource "kubernetes_pod" "nginx" {
+  metadata {
+    name = "nginx-example"
+    labels = {
+      App = "nginx"
+    }
+  }
+
+  spec {
+    container {
+      image = "nginx:1.7.8"
+      name  = "example"
+
+      port {
+        container_port = 80
+      }
+    }
+  }
+}
+
