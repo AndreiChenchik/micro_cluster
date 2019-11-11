@@ -34,7 +34,7 @@ resource "google_container_node_pool" "nodes" {
   name       = "my-node-pool"
   location   = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
-  node_count = ${var.node_count}
+  node_count = var.node_count
 
   node_config {
     #preemptible  = true
