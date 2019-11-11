@@ -1,24 +1,3 @@
-variable "credentials" {
-}
-
-variable "bot_auth" {
-}
-
-variable "bot_chatid" {
-}
-
-variable "project_id" {
-}
-
-variable "region" {
-}
-
-variable "zone" {
-}
-
-variable "instance_name" {
-}
-
 data "http" "report_terraforming" {
   	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Terraforming%20Started"
 }
