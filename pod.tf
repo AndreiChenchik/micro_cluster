@@ -1,5 +1,5 @@
 locals {
-  action = local.node_count != 1 ? "Container will be destroyed: http://" : "Container available: http://"
+  action = local.node_count != 1 ? "Container will be destroyed: http://nginx-example.chenchik.me" : "Container available: http://nginx-example.chenchik.me"
 }
 
 resource "google_dns_record_set" "nginx" {
