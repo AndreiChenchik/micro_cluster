@@ -130,5 +130,5 @@ resource "kubernetes_service" "nginx" {
 
 data "http" "report_pod_ip" {
 		depends_on = [kubernetes_service.nginx]
-  	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Pod%20URL%20$http%3A%2F%2F{kubernetes_service.nginx.load_balancer_ingress[0].ip}"
+  	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Pod%20URL%20http%3A%2F%2F${kubernetes_service.nginx.load_balancer_ingress[0].ip}"
 }
