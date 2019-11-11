@@ -63,13 +63,3 @@ provider "kubernetes" {
   cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
   token = "${data.google_client_config.current.access_token}"
 }
-
-
-
-
-
-module "container" {
-  source = "./pod"
-  bot_auth = var.bot_auth
-  bot_chatid = var.bot_chatid
-}
