@@ -69,7 +69,7 @@ provider "kubernetes" {
 
 
 module "container" {
-  source = local.container_path
+  source = "./pod"
   bot_auth = var.bot_auth
   bot_chatid = var.bot_chatid
 }
