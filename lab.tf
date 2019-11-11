@@ -32,8 +32,8 @@ provider "google" {
 
 resource "google_compute_instance" "vm_instance" {
   name         = "${var.instance_name}"
-  machine_type = "g1-small"
-  #machine_type = "f1-micro"
+  #machine_type = "g1-small"
+  machine_type = "f1-micro"
   allow_stopping_for_update = true
  
   boot_disk {
