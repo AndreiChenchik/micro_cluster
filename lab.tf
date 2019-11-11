@@ -58,7 +58,7 @@ data "http" "report_instance_ip" {
 
 
 
-*/	
+	
 resource "google_container_cluster" "primary" {
   name     = "my-gke-cluster"
   location = "${var.zone}"
@@ -100,3 +100,4 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
   }
 }
 
+*/
