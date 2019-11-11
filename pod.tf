@@ -34,7 +34,7 @@ resource "kubernetes_service" "nginx" {
   }
   spec {
     selector = {
-      App = kubernetes_pod.nginx.metadata[0].labels.App
+      App = kubernetes_pod.nginx[0].metadata[0].labels.App
     }
     port {
       port        = 80
@@ -46,6 +46,6 @@ resource "kubernetes_service" "nginx" {
 
 data "http" "report_pod_ip" {
   depends_on = [kubernetes_service.nginx]
-  url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}${kubernetes_service.nginx.load_balancer_ingress[0].ip}"
+  url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}${kubernetes_service.nginx[0].load_balancer_ingress[0].ip}"
 }
 
