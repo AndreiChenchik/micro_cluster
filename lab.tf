@@ -29,7 +29,7 @@ provider "google" {
  region      = "${var.region}"
  zone        = "${var.zone}"
 }
-
+/*
 resource "google_compute_instance" "vm_instance" {
   name         = "${var.instance_name}"
   #machine_type = "g1-small"
@@ -55,3 +55,5 @@ data "http" "report_instance_ip" {
 		depends_on = [google_compute_instance.vm_instance]
   	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Instance%20IP%20${google_compute_instance.vm_instance.network_interface.0.access_config.0.nat_ip}"
 }
+
+*/
