@@ -57,7 +57,7 @@ data "google_client_config" "current" {}
 
 data "google_container_cluster" "my-gke-cluster" {
   name = "my-gke-cluster"
-  location = var.region
+  location = "${var.zone}"
 }
 
 provider "kubernetes" {
