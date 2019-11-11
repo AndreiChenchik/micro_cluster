@@ -3,6 +3,8 @@ locals {
 }
 
 resource "google_dns_record_set" "nginx" {
+  count = local.node_count != 1 ? 0 : 1
+  
   name = "nginx-example.chenchik.me."
   type = "A"
   ttl  = 60
