@@ -35,7 +35,7 @@ resource "google_container_node_pool" "nodes" {
 
   node_config {
     preemptible  = true
-    machine_type = "${file('node_count')}"
+    machine_type = ${file("node_type")}
 
     metadata = {
       disable-legacy-endpoints = "true"
