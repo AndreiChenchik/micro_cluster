@@ -1,8 +1,10 @@
 locals {
-  action = tonumber(chomp(file("${path.module}/node_count"))) != 1 ? "Container will be destroyed: http://" : "Container available: http://"
+  action = local.node_count != 1 ? "Container will be destroyed: http://" : "Container available: http://"
 }
 
 resource "kubernetes_pod" "nginx" {
+  count = local.node_count != 1 ? 0 : 1
+  
   depends_on = [google_container_node_pool.nodes]
   metadata {
     name = "nginx-example"
@@ -22,7 +24,10 @@ resource "kubernetes_pod" "nginx" {
     }
   }
 }
+
 resource "kubernetes_service" "nginx" {
+  count = local.node_count != 1 ? 0 : 1
+  
   depends_on = [kubernetes_pod.nginx]
   metadata {
     name = "nginx-example"
