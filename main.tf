@@ -30,15 +30,15 @@ resource "google_container_cluster" "primary" {
   }
 }
 
-resource "google_container_node_pool" "primary_preemptible_nodes" {
+resource "google_container_node_pool" "nodes" {
   name       = "my-node-pool"
   location   = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
-  node_count = 1
+  node_count = ${var.node_count}
 
   node_config {
     #preemptible  = true
-    machine_type = "g1-smal"
+    machine_type = "${var.node_type}"
 
     metadata = {
       disable-legacy-endpoints = "true"
