@@ -1,10 +1,5 @@
-variable "bot_auth" {
-}
-
-variable "bot_chatid" {
-}
-
 resource "kubernetes_pod" "nginx" {
+  depends_on = [google_container_node_pool.nodes]
   metadata {
     name = "nginx-example"
     labels = {
@@ -22,6 +17,7 @@ resource "kubernetes_pod" "nginx" {
   }
 }
 resource "kubernetes_service" "nginx" {
+  depends_on = [kubernetes_pod.nginx]
   metadata {
     name = "nginx-example"
   }
