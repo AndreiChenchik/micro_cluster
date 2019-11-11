@@ -61,13 +61,6 @@ provider "kubernetes" {
   token = "${data.google_client_config.current.access_token}"
 }
 
-provider "kubernetes" {
-  load_config_file = false
-  host = "https://${data.google_container_cluster.my-gke-cluster.endpoint}"
-  cluster_ca_certificate = "${base64decode(data.google_container_cluster.my-gke-cluster.master_auth[0].cluster_ca_certificate)}"
-  token = "${data.google_client_config.current.access_token}"
-}
-
 /*
 resource "kubernetes_pod" "nginx" {
   metadata {
