@@ -9,7 +9,7 @@ resource "google_dns_record_set" "nginx" {
 
   managed_zone = "chenchik-me-zone"
 
-  rrdatas = ["${kubernetes_service.nginx-lb[0].attributes.load_balancer_ingress.ip}"]
+  rrdatas = ["${kubernetes_service.nginx-lb[0].attributes.load_balancer_ingress[0].ip}"]
 }
 
 resource "kubernetes_pod" "nginx" {
