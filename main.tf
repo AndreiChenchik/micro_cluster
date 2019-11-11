@@ -31,11 +31,11 @@ resource "google_container_node_pool" "nodes" {
   name       = "${var.pool_name}"
   location   = "${var.zone}"
   cluster    = "${google_container_cluster.primary.name}"
-  node_count = tonumber(file("${path.module}/node_count"))
+  node_count = tonumber(chomp(file("${path.module}/node_count")))
 
   node_config {
     preemptible  = true
-    machine_type = file("${path.module}/node_type")
+    machine_type = chomp(file("${path.module}/node_type"))
 
     metadata = {
       disable-legacy-endpoints = "true"
