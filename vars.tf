@@ -11,5 +11,5 @@ variable "project_id" {
 }
 
 variable "zone" {
-  default = us-east1-c
+  default = "us-east1-c"
 }
