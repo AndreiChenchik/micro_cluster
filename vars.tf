@@ -24,6 +24,6 @@ variable "node_type" {
 }
 
 variable "node_count" {
-  default = 1
-  #default = 0
+  #default = 1
+  default = 0
 }
