@@ -68,8 +68,8 @@ provider "kubernetes" {
 
 
 module "container" {
-  #source = "${local.node_count != 1 ? "./pod/empty" : "./pod"}"
-  source = "./pod"
+  source = "${local.node_count != 1 ? "./pod/empty" : "./pod"}"
+  #source = "./pod"
   bot_auth = var.bot_auth
   bot_chatid = var.bot_chatid
 }
