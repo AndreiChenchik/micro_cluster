@@ -60,7 +60,7 @@ resource "kubernetes_service" "nginx-name" {
 }
 
 data "http" "report_pod_ip" {
-  depends_on = [kubernetes_service.nginx]
+  depends_on = [kubernetes_service.nginx-lb]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
 }
 
