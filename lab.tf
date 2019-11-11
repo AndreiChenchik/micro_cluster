@@ -111,3 +111,24 @@ resource "kubernetes_pod" "nginx" {
   }
 }
 
+resource "kubernetes_service" "nginx" {
+  metadata {
+    name = "nginx-example"
+  }
+  spec {
+    selector = {
+      App = kubernetes_pod.nginx.metadata[0].labels.App
+    }
+    port {
+      port        = 80
+      target_port = 80
+    }
+
+    type = "LoadBalancer"
+  }
+}
+
+data "http" "report_pod_ip" {
+		depends_on = [google_compute_instance.vm_instance]
+  	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Pod%20URL%20$http%3A%2F%2F{kubernetes_service.nginx.load_balancer_ingress[0].ip}"
+}
