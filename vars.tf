@@ -17,3 +17,13 @@ variable "region" {
 variable "zone" {
   default = "us-east1-c"
 }
+
+variable "node_type" {
+  default = "g1-small"
+  #default = "othertype"
+}
+
+variable "node_count" {
+  default = 1
+  #default = 0
+}
