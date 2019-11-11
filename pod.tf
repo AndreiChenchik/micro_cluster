@@ -23,7 +23,7 @@ resource "kubernetes_pod" "nginx" {
   }
 }
 
-resource "kubernetes_service" "nginx" {
+resource "kubernetes_service" "nginx-lb" {
   count = local.node_count != 1 ? 0 : 1
   
   depends_on = [kubernetes_pod.nginx]
@@ -39,6 +39,23 @@ resource "kubernetes_service" "nginx" {
       target_port = 80
     }
     type = "LoadBalancer"
+  }
+}
+
+
+resource "kubernetes_service" "nginx-name" {
+  count = local.node_count != 1 ? 0 : 1
+  
+  depends_on = [kubernetes_pod.nginx]
+  metadata {
+    name = "nginx-example"
+  }
+  spec {
+    selector = {
+      App = kubernetes_pod.nginx[0].metadata[0].labels.App
+    }
+    external_name = "something.chenchik.me"
+    type = "NameService"
   }
 }
 
