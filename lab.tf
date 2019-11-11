@@ -18,7 +18,6 @@ provider "google" {
  zone        = "us-east1-c"
 }
 
-/*
 resource "google_compute_instance" "vm_instance" {
   name         = "terraform-instance"
   machine_type = "g1-small"
@@ -45,7 +44,6 @@ data "http" "report_instance_ip" {
   	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Instance%20IP%20${google_compute_instance.vm_instance.network_interface.0.access_config.0.nat_ip}"
 }
 
-*/
 
 
 
