@@ -1,6 +1,7 @@
 locals {
   action = local.node_count != 1 ? "Container will be destroyed: http://${var.dns-subdomain}.${var.dns-zone}" : "Container available: http://${var.dns-subdomain}.${var.dns-zone}"
-}
+  args = concat(var.args, ["--NotebookApp.custom_display_url="{var.dns-subdomain}.${var.dns-zone}:${var.external_port}""])
+  }
 
 resource "google_dns_record_set" "a-record" {
   count = local.node_count != 1 ? 0 : 1
@@ -33,7 +34,7 @@ resource "kubernetes_pod" "container" {
       }
       env = var.envs
       command = "${var.command}"
-      args = var.args
+      args = local.args
       volume_mount {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
