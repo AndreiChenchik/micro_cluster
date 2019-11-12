@@ -34,3 +34,6 @@ variable "dns-zone" {
 
 variable "dns-subdomain" {
   }
+
+variable "email" {
+  }
