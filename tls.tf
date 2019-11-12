@@ -25,15 +25,24 @@ resource "acme_certificate" "certificate" {
   }
 }
 
+resource "kubernetes_secret" "tls-secret" {
+  type  = "kubernetes.io/tls"
+
+  metadata {
+    name      = "tls-cert"
+  }
+
+  data {
+    "tls.crt" = "${acme_certificate.certificate.certificate_pem}"
+    "tls.key" = "${acme_certificate.certificate.private_key_pem}"
+  }
+}
+
 resource "kubernetes_ingress" "ingress" {
   count = local.node_count != 1 ? 0 : 1
 
   metadata {
     name = "container-ingress"
-
-    annotations = {
-      "ingress.gcp.kubernetes.io/pre-shared-cert" = acme_certificate.certificate.certificate_pem
-    }
   }
 
   spec {
@@ -46,6 +55,10 @@ resource "kubernetes_ingress" "ingress" {
           }
         }
       }
+    }
+    
+    tls {
+      secret_name = "tls-cert"
     }
   }
 }
