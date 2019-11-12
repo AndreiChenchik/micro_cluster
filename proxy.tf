@@ -11,9 +11,17 @@ resource "kubernetes_ingress" "ingress" {
   }
 
   spec {
-    backend {
-      service_name = "container-nodeport"
-      service_port = var.container_port
+    rule {
+      http {
+        path {
+          backend {
+            service_name = "container-nodeport"
+            service_port = var.container_port
+          }
+
+          path = "/*"
+          }
+        }
       }
     
     tls {
