@@ -38,6 +38,12 @@ resource "kubernetes_secret" "tls-secret" {
   }
 }
 
+resource "google_compute_address" "static" {
+  count = local.node_count != 1 ? 0 : 1
+  
+  name = "ipv4-address"
+}
+
 resource "kubernetes_ingress" "ingress" {
   count = local.node_count != 1 ? 0 : 1
 
