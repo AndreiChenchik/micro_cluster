@@ -32,7 +32,7 @@ resource "kubernetes_secret" "tls-secret" {
     name      = "tls-cert"
   }
 
-  data {
+  data = {
     tls {
       crt = "${acme_certificate.certificate.certificate_pem}"
       key = "${acme_certificate.certificate.private_key_pem}"
