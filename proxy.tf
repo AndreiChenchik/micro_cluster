@@ -12,7 +12,7 @@ resource "kubernetes_ingress" "ingress" {
 
   spec {
     backend {
-      service_name = "${var.app_name}-container"
+      service_name = "${var.app_name}"
       service_port = var.container_port
       }
     }
