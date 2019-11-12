@@ -12,14 +12,13 @@ resource "kubernetes_ingress" "ingress" {
 
   spec {
     rule {
+      host = "${var.dns-subdomain}.${var.dns-zone}"
       http {
         path {
           backend {
             service_name = "container-nodeport"
             service_port = var.container_port
-          }
-
-          path = "/*"
+            }
           }
         }
       }
