@@ -34,10 +34,14 @@ variable "args" {
     "--NotebookApp.ip=0.0.0.0",
     "--NotebookApp.password_required=False",
     "--NotebookApp.token=''",
-    "--NotebookApp.custom_display_url="{var.dns-subdomain}.${var.dns-zone}""
+    "--NotebookApp.custom_display_url="{var.dns-subdomain}.${var.dns-zone}:${var.external_port}""
     ]
   }
 
 variable "container_port" {
   default = 8888
+  }
+
+variable "external_port" {
+  default = 80
   }
