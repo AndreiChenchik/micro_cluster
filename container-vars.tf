@@ -16,3 +16,25 @@ variable "mount_path" {
 variable "exposed_port" {
   default="8888"
   }
+
+variable "envs" {
+  default {
+    name="JUPYTER_ENABLE_LAB"
+    value="yes"
+    }
+  }
+
+variable "command" {
+  defaul="start-notebook.sh"
+  }
+
+variable "args" {
+  default = [
+    "--notebook-dir=/home/jovyan/work",
+    "--NotebookApp.ip=0.0.0.0",
+    "--NotebookApp.password_required=False",
+    "--NotebookApp.token=''",
+    "--NotebookApp.custom_display_url="{var.dns-subdomain}.${var.dns-zone}""
+    ]
+  }
+    
