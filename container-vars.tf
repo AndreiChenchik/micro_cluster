@@ -12,10 +12,6 @@ variable "docker_image" {
 variable "mount_path" {
   default="/home/jovyan/work"
   }
-  
-variable "exposed_port" {
-  default="8888"
-  }
 
 variable "envs" {
   default = [
