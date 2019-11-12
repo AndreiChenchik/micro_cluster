@@ -31,6 +31,7 @@ resource "kubernetes_pod" "container" {
       port {
         container_port = 80
       }
+      env = ${var.envs}
       volume_mount {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
