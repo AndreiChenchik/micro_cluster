@@ -71,7 +71,7 @@ resource "kubernetes_service" "proxy" {
 
   metadata {
     namespace = "default"
-    name      = kubernetes_deployment.proxy_dep.metadata.0.name
+    name      = "container-proxy"
   }
 
   spec {
