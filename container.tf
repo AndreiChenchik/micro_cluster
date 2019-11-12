@@ -10,7 +10,7 @@ resource "kubernetes_pod" "container" {
   metadata {
     name = "${var.app_name}-container"
     labels = {
-      App = "${var.app_name}"
+      app = "${var.app_name}"
     }
   }
   spec {
