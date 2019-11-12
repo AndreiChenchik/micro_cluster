@@ -32,7 +32,7 @@ resource "kubernetes_pod" "container" {
       port {
         container_port = var.container_port
       }
-      env = var.envs
+      env {var.envs}
       command = "${var.command}"
       args = local.args
       volume_mount {
