@@ -32,7 +32,7 @@ resource "kubernetes_ingress" "ingress" {
     name = "container-ingress"
 
     annotations = {
-      "ingress.gcp.kubernetes.io/pre-shared-cert" = acme_certificate.certificate[0].certificate_pem
+      "ingress.gcp.kubernetes.io/pre-shared-cert" = acme_certificate.certificate.certificate_pem
     }
   }
 
