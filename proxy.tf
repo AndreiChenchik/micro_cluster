@@ -15,7 +15,6 @@ resource "kubernetes_ingress" "ingress" {
       service_name = "${var.app_name}"
       service_port = var.container_port
       }
-    }
     
     tls {
       secret_name = "tls-cert"
