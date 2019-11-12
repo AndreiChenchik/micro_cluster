@@ -18,14 +18,14 @@ variable "exposed_port" {
   }
 
 variable "envs" {
-  default {
+  default = {
     name="JUPYTER_ENABLE_LAB"
     value="yes"
     }
   }
 
 variable "command" {
-  defaul="start-notebook.sh"
+  default="start-notebook.sh"
   }
 
 variable "args" {
