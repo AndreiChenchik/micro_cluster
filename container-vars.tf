@@ -39,6 +39,9 @@ variable "args" {
     ]
   }
 
+variable "jupyter_password {
+}
+
 variable "container_port" {
   default = 8888
   }
