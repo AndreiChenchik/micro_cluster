@@ -17,6 +17,7 @@ resource "kubernetes_ingress" "ingress" {
       }
     
     tls {
+      hosts = ["${var.dns-subdomain}.${var.dns-zone}"]
       secret_name = "tls-cert"
     }
   }
