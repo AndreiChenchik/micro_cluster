@@ -33,5 +33,4 @@ variable "dns-zone" {
   }
 
 variable "dns-subdomain" {
-  default="${var.app_name}"
   }
