@@ -19,8 +19,10 @@ variable "exposed_port" {
 
 variable "envs" {
   default = [
-    name="JUPYTER_ENABLE_LAB"
-    value="yes"
+    {
+      name="JUPYTER_ENABLE_LAB"
+      value="yes"
+      }
     ]
   }
 
