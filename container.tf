@@ -41,29 +41,6 @@ resource "kubernetes_pod" "container" {
   }
 }
 
-resource "kubernetes_service" "proxy" {
-  count = local.node_count != 1 ? 0 : 1
-
-  metadata {
-    name      = "container-proxy"
-  }
-
-  spec {
-    type             = "NodePort"
-
-    port {
-      name        = "http"
-      protocol    = "TCP"
-      port        = var.container_port
-      target_port = var.container_port
-    }
-
-    selector = {
-      app = kubernetes_pod.container[0].metadata[0].labels.App
-    }
-  }
-}
-
 data "http" "report_pod_ip" {
   depends_on = [kubernetes_ingress.ingress]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
