@@ -6,7 +6,7 @@ variable "persistent-disk-name" {
   }
   
 variable "docker_image" {
-  default="docker.pkg.github.com/gumlooter/lab/jupyter:20191023162926d64653"
+  default="jupyter/base-notebook:latest"
   }
   
 variable "mount_path" {
