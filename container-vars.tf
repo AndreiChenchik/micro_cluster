@@ -30,7 +30,7 @@ variable "args" {
   default = [
     "--notebook-dir=/home/jovyan/work/lab",
     "--NotebookApp.ip=0.0.0.0",
-    "--NotebookApp.password_required=False",
+    "--NotebookApp.allow_origin='*'",
     "--NotebookApp.token=''"
     ]
   }
