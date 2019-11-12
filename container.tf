@@ -19,20 +19,20 @@ resource "kubernetes_pod" "container" {
   
   depends_on = [google_container_node_pool.nodes]
   metadata {
-    name = "nginx-example"
+    name = "${var.app_name}-container"
     labels = {
-      App = "nginx"
+      App = "${var.app_name}"
     }
   }
   spec {
     container {
-      image = "nginx:1.7.8"
-      name  = "example"
+      image = "${var.docker_image}"
+      name  = "container"
       port {
         container_port = 80
       }
       volume_mount {
-        mount_path = "/test"
+        mount_path = "${var.mount_path}"
         name = "persistent-volume"
       }
     }
