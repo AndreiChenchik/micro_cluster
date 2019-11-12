@@ -37,4 +37,7 @@ variable "args" {
     "--NotebookApp.custom_display_url="{var.dns-subdomain}.${var.dns-zone}""
     ]
   }
-    
+
+variable "container_port" {
+  default = 8888
+  }
