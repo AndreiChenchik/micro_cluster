@@ -25,3 +25,15 @@ variable "region" {
 variable "zone" {
   default = "us-east1-c"
 }
+
+variable "dns-zone-name" {
+  }
+
+variable "dns-zone" {
+  }
+
+variable "dns-subdomain" {
+  }
+
+variable "persistent-disk-name" {
+  }
