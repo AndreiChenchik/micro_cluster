@@ -29,7 +29,7 @@ resource "kubernetes_pod" "container" {
       image = "${var.docker_image}"
       name  = "container"
       port {
-        container_port = 80
+        container_port = ${var.container_port}
       }
       env = ${var.envs}
       command = ${var.command}
@@ -61,8 +61,8 @@ resource "kubernetes_service" "loadbalancer" {
       App = kubernetes_pod.container[0].metadata[0].labels.App
     }
     port {
-      port        = 80
-      target_port = 80
+      port        = ${var.container_port}
+      target_port = ${var.external_port}
     }
     type = "LoadBalancer"
   }
