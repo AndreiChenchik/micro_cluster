@@ -29,6 +29,7 @@ resource "kubernetes_ingress" "ingress" {
     
     annotations = {
       "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
+      "ingress.kubernetes.io/force-ssl-redirect" = "true"
     }
   }
 
