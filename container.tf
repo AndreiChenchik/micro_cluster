@@ -11,8 +11,8 @@ resource "google_dns_record_set" "a-record" {
   ttl  = 60
 
   managed_zone = "${var.dns-zone-name}"
-  rrdatas = ["127.0.0.1"]
-  #rrdatas = ["${kubernetes_service.loadbalancer[0].load_balancer_ingress[0].ip}"]
+
+  rrdatas = ["${google_compute_address.static.address}"]
 }
 
 resource "kubernetes_pod" "container" {
