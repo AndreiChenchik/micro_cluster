@@ -26,6 +26,8 @@ resource "kubernetes_ingress" "ingress" {
 
 
 resource "kubernetes_service" "nodeport" {
+  count = local.node_count != 1 ? 0 : 1
+  
   metadata {
     name = "container-nodeport"
   }
