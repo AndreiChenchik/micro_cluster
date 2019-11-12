@@ -39,7 +39,7 @@ variable "args" {
     ]
   }
 
-variable "jupyter_password {
+variable "jupyter_password" {
 }
 
 variable "container_port" {
