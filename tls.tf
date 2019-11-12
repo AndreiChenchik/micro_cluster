@@ -51,7 +51,7 @@ resource "kubernetes_ingress" "ingress" {
     name = "container-ingress"
     
     annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.static.name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.static[0].name
     }
   }
 
