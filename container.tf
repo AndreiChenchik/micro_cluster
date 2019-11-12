@@ -8,7 +8,7 @@ resource "kubernetes_pod" "container" {
   
   depends_on = [google_container_node_pool.nodes]
   metadata {
-    name = "${var.app_name}-container"
+    name = "${var.app_name}"
     labels = {
       app = "${var.app_name}"
     }
