@@ -31,8 +31,7 @@ resource "kubernetes_service" "nodeport" {
   }
   spec {
     selector = {
-      app =""
-      #app = "${kubernetes_pod.container[0].metadata.0.labels.app}"
+      app = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     }
     port {
       port = var.container_port
