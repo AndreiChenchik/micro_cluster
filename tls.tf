@@ -38,22 +38,27 @@ resource "kubernetes_secret" "tls-secret" {
   }
 }
 
-resource "google_compute_global_address" "static" {
+resource "kubernetes_service" "proxy" {
   count = local.node_count != 1 ? 0 : 1
-  
-  name = "ipv4-address"
-}
 
-resource "google_dns_record_set" "a-record" {
-  count = local.node_count != 1 ? 0 : 1
-  
-  name = "${var.dns-subdomain}.${var.dns-zone}."
-  type = "A"
-  ttl  = 60
+  metadata {
+    name      = "container-proxy"
+  }
 
-  managed_zone = "${var.dns-zone-name}"
+  spec {
+    type             = "NodePort"
 
-  rrdatas = ["${google_compute_global_address.static[0].address}"]
+    port {
+      name        = "http"
+      protocol    = "TCP"
+      port        = var.container_port
+      target_port = var.container_port
+    }
+
+    selector = {
+      app = kubernetes_pod.container[0].metadata[0].labels.App
+    }
+  }
 }
 
 resource "kubernetes_ingress" "ingress" {
