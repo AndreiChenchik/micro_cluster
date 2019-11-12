@@ -29,11 +29,11 @@ resource "kubernetes_pod" "container" {
       image = "${var.docker_image}"
       name  = "container"
       port {
-        container_port = ${var.container_port}
+        container_port = var.container_port
       }
-      env = ${var.envs}
-      command = ${var.command}
-      args = ${var.args}
+      env = var.envs
+      command = "${var.command}"
+      args = var.args
       volume_mount {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
@@ -61,8 +61,8 @@ resource "kubernetes_service" "loadbalancer" {
       App = kubernetes_pod.container[0].metadata[0].labels.App
     }
     port {
-      port        = ${var.container_port}
-      target_port = ${var.external_port}
+      port        = var.container_port
+      target_port = var.external_port
     }
     type = "LoadBalancer"
   }
