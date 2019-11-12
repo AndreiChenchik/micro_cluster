@@ -38,7 +38,7 @@ resource "kubernetes_secret" "tls-secret" {
   }
 }
 
-resource "google_compute_address" "static" {
+resource "google_compute_global_address" "static" {
   count = local.node_count != 1 ? 0 : 1
   
   name = "ipv4-address"
@@ -51,7 +51,7 @@ resource "kubernetes_ingress" "ingress" {
     name = "container-ingress"
     
     annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_address.static[0].name}"
+      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
     }
   }
 
