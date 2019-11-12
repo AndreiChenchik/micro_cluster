@@ -36,10 +36,6 @@ resource "kubernetes_pod" "container" {
         name = var.envs[0].name
         value = var.envs[0].value
         }
-      env {
-        name = var.envs[1].name
-        value = var.envs[1].value
-        }
       command = [var.command]
       args = local.args
       volume_mount {
