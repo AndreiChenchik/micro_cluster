@@ -53,22 +53,28 @@ resource "kubernetes_pod" "container" {
   }
 }
 
-resource "kubernetes_service" "loadbalancer" {
+resource "kubernetes_service" "proxy" {
   count = local.node_count != 1 ? 0 : 1
-  
-  depends_on = [kubernetes_pod.container]
+
   metadata {
-    name = "loadbalancer"
+    namespace = "default"
+    name      = "container-proxy"
   }
+
   spec {
-    selector = {
-      App = kubernetes_pod.container[0].metadata[0].labels.App
-    }
+    type             = "NodePort"
+    session_affinity = "ClientIP"
+
     port {
-      port        = var.external_port
-      target_port = var.container_port
+      name        = "http"
+      protocol    = "TCP"
+      port        = 80
+      target_port = 8888
     }
-    type = "LoadBalancer"
+
+    selector = {
+      app = kubernetes_pod.container[0].metadata[0].labels.App
+    }
   }
 }
 
