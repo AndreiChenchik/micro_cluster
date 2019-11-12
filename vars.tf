@@ -33,7 +33,5 @@ variable "dns-zone" {
   }
 
 variable "dns-subdomain" {
-  }
-
-variable "persistent-disk-name" {
+  default="${var.app_name}"
   }
