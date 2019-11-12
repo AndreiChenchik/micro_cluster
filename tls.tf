@@ -51,21 +51,15 @@ resource "kubernetes_ingress" "ingress" {
     name = "container-ingress"
     
     annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = google_compute_address.static[0].name
+      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_address.static[0].name}"
     }
   }
 
   spec {
-    rule {
-      http {
-        path {
-          backend {
-            service_name = kubernetes_service.proxy[0].metadata.0.name
-            service_port = 80
-          }
-        }
+    backend {
+      service_name = kubernetes_service.proxy[0].metadata.0.name
+      service_port = 80
       }
-    }
     
     tls {
       secret_name = "tls-cert"
