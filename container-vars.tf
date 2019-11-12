@@ -44,5 +44,5 @@ variable "container_port" {
   }
 
 variable "external_port" {
-  default = 80
+  default = 443
   }
