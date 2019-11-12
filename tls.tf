@@ -24,3 +24,28 @@ resource "acme_certificate" "certificate" {
       }
   }
 }
+
+resource "kubernetes_ingress" "ingress" {
+  count = local.node_count != 1 ? 0 : 1
+
+  metadata {
+    name = "container-ingress"
+
+    annotations = {
+      "ingress.gcp.kubernetes.io/pre-shared-cert" = acme_certificate.certificate[0].certificate_pem
+    }
+  }
+
+  spec {
+    rule {
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.proxy[0].metadata.0.name
+            service_port = 80
+          }
+        }
+      }
+    }
+  }
+}
