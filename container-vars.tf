@@ -19,10 +19,6 @@ variable "envs" {
       name="JUPYTER_ENABLE_LAB"
       value="yes"
       },
-    {
-      name="GEN_CERT"
-      value="no"
-      },
     ]
   }
 
