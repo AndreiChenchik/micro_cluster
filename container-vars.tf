@@ -21,7 +21,7 @@ variable "envs" {
       },
     {
       name="GEN_CERT"
-      value="yes"
+      value="no"
       },
     ]
   }
@@ -47,5 +47,5 @@ variable "container_port" {
   }
 
 variable "external_port" {
-  default = 443
+  default = 80
   }
