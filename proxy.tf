@@ -21,4 +21,5 @@ resource "kubernetes_ingress" "ingress" {
       secret_name = "tls-cert"
     }
   }
+  depends_on = [kubernetes_pod.container]
 }
