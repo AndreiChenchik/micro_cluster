@@ -58,7 +58,7 @@ resource "kubernetes_ingress" "ingress" {
   spec {
     backend {
       service_name = kubernetes_service.proxy[0].metadata.0.name
-      service_port = 8888
+      service_port = var.container_port
       }
     
     tls {
