@@ -12,7 +12,7 @@ resource "google_dns_record_set" "a-record" {
 
   managed_zone = "${var.dns-zone-name}"
 
-  rrdatas = ["${kubernetes_service.loadbalancer[0].load_balancer_ingress[0].ip}"]
+  rrdatas = ["${kubernetes_service.ingress[0].load_balancer_ingress[0].ip}"]
 }
 
 resource "kubernetes_pod" "container" {
@@ -53,22 +53,67 @@ resource "kubernetes_pod" "container" {
   }
 }
 
-resource "kubernetes_service" "loadbalancer" {
+resource "google_compute_managed_ssl_certificate" "container" {
   count = local.node_count != 1 ? 0 : 1
-  
-  depends_on = [kubernetes_pod.container]
-  metadata {
-    name = "loadbalancer"
+
+  provider = "google-beta"
+
+  name = "container-ssl"
+
+  managed {
+    domains = ["{var.dns-subdomain}.${var.dns-zone}"]
   }
+}
+
+
+resource "kubernetes_service" "proxy" {
+  count = local.node_count != 1 ? 0 : 1
+
+  metadata {
+    namespace = "default"
+    name      = kubernetes_deployment.proxy_dep.metadata.0.name
+  }
+
   spec {
-    selector = {
-      App = kubernetes_pod.container[0].metadata[0].labels.App
-    }
+    type             = "NodePort"
+    session_affinity = "ClientIP"
+
     port {
-      port        = var.external_port
-      target_port = var.container_port
+      name        = "http"
+      protocol    = "TCP"
+      port        = 80
+      target_port = 8888
     }
-    type = "LoadBalancer"
+
+    selector = {
+      app = kubernetes_pod.container[0].metadata[0].labels.App
+    }
+  }
+}
+
+resource "kubernetes_ingress" "ingress" {
+  count = local.node_count != 1 ? 0 : 1
+
+  metadata {
+    name = "container-ingress"
+
+    annotations = {
+      "ingress.gcp.kubernetes.io/pre-shared-cert"   = google_compute_managed_ssl_certificate.container[0].name
+      "kubernetes.io/ingress.global-static-ip-name" = google_compute_global_address.address.name
+    }
+  }
+
+  spec {
+    rule {
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.proxy[0].metadata.0.name
+            service_port = 80
+          }
+        }
+      }
+    }
   }
 }
 
