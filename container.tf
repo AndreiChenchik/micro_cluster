@@ -1,5 +1,5 @@
 locals {
-  action = local.node_count != 1 ? "Container will be destroyed: https://${var.dns-subdomain}.${var.dns-zone}" : "Container available: https://${var.dns-subdomain}.${var.dns-zone}"
+  action = local.node_count != 1 ? "Container will be destroyed: http://${var.dns-subdomain}.${var.dns-zone}" : "Container available: http://${var.dns-subdomain}.${var.dns-zone}"
   args = concat(var.args, ["--NotebookApp.custom_display_url=${var.dns-subdomain}.${var.dns-zone}:${var.external_port}","--NotebookApp.password=${var.jupyter_password}"])
   }
 
