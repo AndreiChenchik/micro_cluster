@@ -12,7 +12,7 @@ resource "google_dns_record_set" "a-record" {
 
   managed_zone = "${var.dns-zone-name}"
 
-  rrdatas = ["${kubernetes_service.ingress[0].load_balancer_ingress[0].ip}"]
+  rrdatas = ["${kubernetes_ingress.ingress[0].load_balancer_ingress[0].ip}"]
 }
 
 resource "kubernetes_pod" "container" {
@@ -118,6 +118,6 @@ resource "kubernetes_ingress" "ingress" {
 }
 
 data "http" "report_pod_ip" {
-  depends_on = [kubernetes_service.loadbalancer]
+  depends_on = [kubernetes_ingress.ingress]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
 }
