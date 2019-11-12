@@ -33,8 +33,8 @@ resource "kubernetes_secret" "tls-secret" {
   }
 
   data {
-    "tls.crt" = "${acme_certificate.certificate.certificate_pem}"
-    "tls.key" = "${acme_certificate.certificate.private_key_pem}"
+    tls.crt = "${acme_certificate.certificate.certificate_pem}"
+    tls.key = "${acme_certificate.certificate.private_key_pem}"
   }
 }
 
