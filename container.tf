@@ -1,20 +1,20 @@
 locals {
-  action = local.node_count != 1 ? "Container will be destroyed: http://nginx-example.chenchik.me" : "Container available: http://nginx-example.chenchik.me"
+  action = local.node_count != 1 ? "Container will be destroyed: http://${var.dns-subdomain}.${var.dns-zone}" : "Container available: http://${var.dns-subdomain}.${var.dns-zone}"
 }
 
-resource "google_dns_record_set" "nginx" {
+resource "google_dns_record_set" "a-record" {
   count = local.node_count != 1 ? 0 : 1
   
-  name = "nginx-example.chenchik.me."
+  name = "${var.dns-subdomain}.${var.dns-zone}."
   type = "A"
   ttl  = 60
 
-  managed_zone = "chenchik-me-zone"
+  managed_zone = "${var.dns-zone-name}"
 
-  rrdatas = ["${kubernetes_service.nginx-lb[0].load_balancer_ingress[0].ip}"]
+  rrdatas = ["${kubernetes_service.loadbalancer[0].load_balancer_ingress[0].ip}"]
 }
 
-resource "kubernetes_pod" "nginx" {
+resource "kubernetes_pod" "container" {
   count = local.node_count != 1 ? 0 : 1
   
   depends_on = [google_container_node_pool.nodes]
@@ -33,29 +33,29 @@ resource "kubernetes_pod" "nginx" {
       }
       volume_mount {
         mount_path = "/test"
-        name = "test-volume"
+        name = "persistent-volume"
       }
     }
     
     volume {
-      name= "test-volume"
+      name= "persistent-volume"
       gce_persistent_disk {
-        pd_name = "disk-2"
+        pd_name = "${var.persistent-disk-name}"
       }
     }
   }
 }
 
-resource "kubernetes_service" "nginx-lb" {
+resource "kubernetes_service" "loadbalancer" {
   count = local.node_count != 1 ? 0 : 1
   
-  depends_on = [kubernetes_pod.nginx]
+  depends_on = [kubernetes_pod.container]
   metadata {
-    name = "nginx-example"
+    name = "loadbalancer"
   }
   spec {
     selector = {
-      App = kubernetes_pod.nginx[0].metadata[0].labels.App
+      App = kubernetes_pod.container[0].metadata[0].labels.App
     }
     port {
       port        = 80
@@ -66,7 +66,6 @@ resource "kubernetes_service" "nginx-lb" {
 }
 
 data "http" "report_pod_ip" {
-  depends_on = [kubernetes_service.nginx-lb]
+  depends_on = [kubernetes_service.loadbalancer]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
 }
-
