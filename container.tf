@@ -57,18 +57,16 @@ resource "kubernetes_service" "proxy" {
   count = local.node_count != 1 ? 0 : 1
 
   metadata {
-    namespace = "default"
     name      = "container-proxy"
   }
 
   spec {
     type             = "NodePort"
-    session_affinity = "ClientIP"
 
     port {
       name        = "http"
       protocol    = "TCP"
-      port        = 80
+      port        = 8888
       target_port = 8888
     }
 
