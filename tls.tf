@@ -21,5 +21,6 @@ resource "acme_certificate" "certificate" {
     config = {
       GCE_PROJECT = "${var.project_id}"
       GCE_SERVICE_ACCOUNT = "${var.credentials}"
+      }
   }
 }
