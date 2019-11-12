@@ -66,8 +66,8 @@ resource "kubernetes_service" "proxy" {
     port {
       name        = "http"
       protocol    = "TCP"
-      port        = 8888
-      target_port = 8888
+      port        = var.container_port
+      target_port = var.container_port
     }
 
     selector = {
