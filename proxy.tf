@@ -21,5 +21,22 @@ resource "kubernetes_ingress" "ingress" {
       secret_name = "tls-cert"
     }
   }
-  depends_on = [kubernetes_pod.container]
+  depends_on = [kubernetes_service.nodeport]
+}
+
+
+resource "kubernetes_service" "nodeport" {
+  metadata {
+    name = "container-nodeport"
+  }
+  spec {
+    selector {
+      run = "${kubernetes_pod.container[0].metadata.0.labels.run}"
+    }
+    port {
+      port = var.container_port
+    }
+
+    type = "NodePort"
+  }
 }
