@@ -65,8 +65,8 @@ resource "kubernetes_service" "loadbalancer" {
       App = kubernetes_pod.container[0].metadata[0].labels.App
     }
     port {
-      port        = var.container_port
-      target_port = var.external_port
+      port        = var.external_port
+      target_port = var.container_port
     }
     type = "LoadBalancer"
   }
