@@ -33,9 +33,16 @@ resource "kubernetes_ingress" "ingress" {
   }
 
   spec {
-    backend {
-      service_name = kubernetes_service.proxy[0].metadata.0.name
-      service_port = var.container_port
+    rule {
+      host = "${var.dns-subdomain}.${var.dns-zone}"
+      http {
+        path {
+          backend {
+            service_name = kubernetes_service.proxy[0].metadata.0.name
+            service_port = var.container_port
+            }
+          }
+        }
       }
     
     tls {
