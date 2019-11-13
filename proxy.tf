@@ -5,7 +5,7 @@ resource "kubernetes_ingress" "ingress" {
     name = "container-ingress"
     
     annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
+      #"kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
       "kubernetes.io/ingress.class" = "nginx"
     }
   }
@@ -49,6 +49,7 @@ resource "kubernetes_service" "ingress-nginx" {
     namespace = "ingress-nginx"
   }
   spec {
+    load_balancer_ip = "${google_compute_global_address.static[0].address}"
     external_traffic_policy = "Local"
     selector = {
       "app.kubernetes.io/name" = "ingress-nginx"
