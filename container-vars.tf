@@ -40,6 +40,6 @@ variable "jupyter_password" {
 }
 
 variable "container_port" {
-  default = 80
+  default = 8080
 #  default = 8888
   }
