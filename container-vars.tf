@@ -29,7 +29,7 @@ variable "command" {
 variable "args" {
   default = [
     "--notebook-dir=/home/jovyan/work/lab",
-    "--NotebookApp.ip=0.0.0.0",
+    "--NotebookApp.ip='*'",
     "--NotebookApp.allow_origin='*'",
     "--NotebookApp.token=''"
     ]
