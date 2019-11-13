@@ -1,9 +1,3 @@
-resource "google_compute_global_address" "static" {
-  count = local.node_count != 1 ? 0 : 1
-  
-  name = "ipv4-address"
-}
-
 provider "acme" {
   server_url = "https://acme-v02.api.letsencrypt.org/directory"
 }
@@ -53,5 +47,5 @@ resource "google_dns_record_set" "a-record" {
 
   managed_zone = "${var.dns-zone-name}"
 
-  rrdatas = ["${google_compute_global_address.static[0].address}"]
+  rrdatas = ["${kubernetes_service.loadbalancer[0].load_balancer_ingress.0.ip}"]
 }
