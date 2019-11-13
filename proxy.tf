@@ -1,20 +1,20 @@
-resource "kubernetes_ingress" "ingress" {
+resource "kubernetes_ingress" "ingress2" {
   count = local.node_count != 1 ? 0 : 1
 
   metadata {
     name = "container-ingress"
     
     annotations = {
-      "kubernetes.io/ingress.class" = "nginx"
-      "ingress.kubernetes.io/ssl-redirect" = "true"
-      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
-      "nginx.ingress.kubernetes.io/rewrite-target" = "/"
+#      "kubernetes.io/ingress.class" = "nginx"
+#      "ingress.kubernetes.io/ssl-redirect" = "true"
+#      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+#      "nginx.ingress.kubernetes.io/rewrite-target" = "/"
     }
   }
 
   spec {
     rule {
-      host = "${var.dns-subdomain}.${var.dns-zone}"
+#      host = "${var.dns-subdomain}.${var.dns-zone}"
       http {
         path {
           path = "/"
@@ -26,23 +26,14 @@ resource "kubernetes_ingress" "ingress" {
         }
       }
     
-    tls {
-      hosts = ["${var.dns-subdomain}.${var.dns-zone}"]
-      secret_name = "tls-cert"
-    }
+#    tls {
+#      hosts = ["${var.dns-subdomain}.${var.dns-zone}"]
+#      secret_name = "tls-cert"
+#    }
   }
   depends_on = [kubernetes_service.nodeport, kubernetes_service.ingress-nginx]
 }
 
-resource "kubernetes_namespace" "ingress-nginx" {
-  metadata {
-    annotations = {
-      name = "ingress-nginx"
-      namespace = "ingress-nginx"
-    }
-    name = "ingress-nginx"
-  }
-}
 
 resource "kubernetes_service" "ingress-nginx" {
   count = local.node_count != 1 ? 0 : 1
