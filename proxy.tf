@@ -57,6 +57,7 @@ resource "kubernetes_service" "ingress-nginx" {
 
     type = "LoadBalancer"
   }
+}
 
 resource "kubernetes_service" "nodeport" {
   count = local.node_count != 1 ? 0 : 1
