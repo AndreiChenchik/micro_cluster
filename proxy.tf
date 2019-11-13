@@ -1,8 +1,8 @@
-resource "kubernetes_ingress" "ingress2" {
+resource "kubernetes_ingress" "ingress" {
   count = local.node_count != 1 ? 0 : 1
 
   metadata {
-    name = "container-ingress2"
+    name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     
     annotations = {
 #      "kubernetes.io/ingress.class" = "nginx"
@@ -19,7 +19,7 @@ resource "kubernetes_ingress" "ingress2" {
         path {
           path = "/"
           backend {
-            service_name = "container-nodeport"
+            service_name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
             service_port = var.container_port
             }
           }
@@ -67,7 +67,7 @@ resource "kubernetes_service" "nodeport" {
   count = local.node_count != 1 ? 0 : 1
   
   metadata {
-    name = "container-nodeport"
+    name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
   }
   spec {
     selector = {
@@ -77,6 +77,6 @@ resource "kubernetes_service" "nodeport" {
       port = var.container_port
     }
 
-    type = "NodePort"
+  type = "NodePort"
   }
 }
