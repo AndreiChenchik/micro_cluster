@@ -6,6 +6,7 @@ resource "kubernetes_ingress" "ingress" {
     
     annotations = {
       "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
+      "kubernetes.io/ingress.class" = "nginx"
     }
   }
 
@@ -14,6 +15,7 @@ resource "kubernetes_ingress" "ingress" {
       host = "${var.dns-subdomain}.${var.dns-zone}"
       http {
         path {
+          path = "/"
           backend {
             service_name = "container-nodeport"
             service_port = var.container_port
@@ -27,7 +29,7 @@ resource "kubernetes_ingress" "ingress" {
       secret_name = "tls-cert"
     }
   }
-  depends_on = [kubernetes_service.nodeport]
+  depends_on = [kubernetes_service.nodeport, kubernetes_service.ingress-nginx]
 }
 
 resource "kubernetes_service" "ingress-nginx" {
