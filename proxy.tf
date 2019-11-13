@@ -7,6 +7,9 @@ resource "kubernetes_ingress" "ingress" {
     annotations = {
       #"kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
       "kubernetes.io/ingress.class" = "nginx"
+      "ingress.kubernetes.io/ssl-redirect" = "true"
+      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+      "nginx.ingress.kubernetes.io/rewrite-target" = "/"
     }
   }
 
