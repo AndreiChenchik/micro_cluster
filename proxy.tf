@@ -32,6 +32,15 @@ resource "kubernetes_ingress" "ingress" {
   depends_on = [kubernetes_service.nodeport, kubernetes_service.ingress-nginx]
 }
 
+resource "kubernetes_namespace" "ingress-nginx" {
+  metadata {
+    annotations = {
+      name = "ingress-nginx"
+    }
+    name = "ingress-nginx"
+  }
+}
+
 resource "kubernetes_service" "ingress-nginx" {
   count = local.node_count != 1 ? 0 : 1
   
