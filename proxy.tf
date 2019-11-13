@@ -9,8 +9,8 @@ resource "kubernetes_service" "loadbalancer" {
       app = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     }
     port {
-      port = var.container_port
-      target_port = var.external_port
+      port = var.external_port
+      target_port = var.container_port
     }
 
   type = "LoadBalancer"
