@@ -29,9 +29,10 @@ variable "command" {
 variable "args" {
   default = [
     "--notebook-dir=/home/jovyan/work/lab",
-    "--NotebookApp.ip='*'",
-    "--NotebookApp.allow_origin='*'",
-    "--NotebookApp.token=''"
+    "--NotebookApp.ip='0.0.0.0'",
+    "--NotebookApp.token=''",
+    "--NotebookApp.keyfile=/home/jovyan/work/notebook.key",
+    "--NotebookApp.certfile=/home/jovyan/work/notebook.crt"
     ]
   }
 
