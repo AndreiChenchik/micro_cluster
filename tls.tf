@@ -11,7 +11,7 @@ resource "acme_registration" "reg" {
   email_address   = "${var.email}"
 }
 
-resource "acme_certificate" "certificate" {
+resource "acme_certificate" "cert" {
   account_key_pem           = "${acme_registration.reg.account_key_pem}"
   common_name               = "${var.dns-subdomain}.${var.dns-zone}"
 
@@ -33,7 +33,7 @@ resource "kubernetes_secret" "tls-secret" {
   }
 
   data = {
-    "tls.crt" = "${acme_certificate.certificate.certificate_pem}"
-    "tls.key" = "${acme_certificate.certificate.private_key_pem}"
+    "tls.crt" = "${acme_certificate.cert.certificate_pem}"
+    "tls.key" = "${acme_certificate.cert.private_key_pem}"
   }
 }
