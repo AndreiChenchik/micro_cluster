@@ -2,4 +2,4 @@
 Infrastructure
 
 todo:
-- add tls cert 
+- fix routing
