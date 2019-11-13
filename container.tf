@@ -38,8 +38,25 @@ resource "kubernetes_pod" "container" {
         pd_name = "${var.persistent-disk-name}"
       }
     }
+    
+    readiness_probe {
+      tcp_socket {
+        port = var.container_port
+        }
+      
+      initial_delay_seconds = 5
+      period_seconds        = 10
+      }
+    
+    liveness_probe {
+      tcp_socket {
+        port = var.container_port
+        }
+      initial_delay_seconds = 15
+      period_seconds        = 20
+      }
+    }
   }
-}
 
 data "http" "report_pod_ip" {
 #  depends_on = [kubernetes_ingress.ingress]
