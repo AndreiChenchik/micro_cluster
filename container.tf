@@ -42,6 +42,6 @@ resource "kubernetes_pod" "container" {
 }
 
 data "http" "report_pod_ip" {
-  depends_on = [kubernetes_ingress.ingress]
+#  depends_on = [kubernetes_ingress.ingress]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
 }
