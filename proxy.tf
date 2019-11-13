@@ -5,6 +5,7 @@ resource "kubernetes_service" "loadbalancer" {
     name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
   }
   spec {
+    load_balancer_ip = "${google_compute_global_address.static[0].address}"
     selector = {
       app = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     }
