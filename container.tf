@@ -30,16 +30,8 @@ resource "kubernetes_pod" "container" {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
       }
-    }
-    
-    volume {
-      name= "persistent-volume"
-      gce_persistent_disk {
-        pd_name = "${var.persistent-disk-name}"
-      }
-    }
-    
-    readiness_probe {
+      
+          readiness_probe {
       tcp_socket {
         port = var.container_port
         }
@@ -55,6 +47,14 @@ resource "kubernetes_pod" "container" {
       initial_delay_seconds = 15
       period_seconds        = 20
       }
+    }
+    
+    volume {
+      name= "persistent-volume"
+      gce_persistent_disk {
+        pd_name = "${var.persistent-disk-name}"
+      }
+    }
     }
   }
 
