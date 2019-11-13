@@ -39,6 +39,7 @@ resource "kubernetes_namespace" "ingress-nginx" {
   metadata {
     annotations = {
       name = "ingress-nginx"
+      namespace = "ingress-nginx"
     }
     name = "ingress-nginx"
   }
