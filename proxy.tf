@@ -49,7 +49,6 @@ resource "kubernetes_service" "ingress-nginx" {
   
   metadata {
     name = "ingress-nginx"
-    namespace = "ingress-nginx"
   }
   spec {
     load_balancer_ip = "${google_compute_global_address.static[0].address}"
