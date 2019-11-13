@@ -16,6 +16,7 @@ resource "kubernetes_pod" "container" {
   spec {
     container {
       image = "${var.docker_image}"
+      name = "${var.app_name}"
       port {
         container_port = var.container_port
       }
