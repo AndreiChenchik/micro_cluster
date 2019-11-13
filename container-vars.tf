@@ -31,8 +31,8 @@ variable "args" {
     "--notebook-dir=/home/jovyan/work/lab",
     "--NotebookApp.ip='0.0.0.0'",
     "--NotebookApp.token=''",
-    "--NotebookApp.keyfile=/home/jovyan/work/notebook.key",
-    "--NotebookApp.certfile=/home/jovyan/work/notebook.crt"
+    "--NotebookApp.keyfile=/home/jovyan/work/cert/notebook.key",
+    "--NotebookApp.certfile=/home/jovyan/work/cert/notebook.crt"
     ]
   }
 
