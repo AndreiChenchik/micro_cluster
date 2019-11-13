@@ -13,5 +13,5 @@ resource "google_dns_record_set" "a-record" {
 
   managed_zone = "${var.dns-zone-name}"
 
-  rrdatas = ["${google_compute_global_address.static[0].address}"]
+  rrdatas = ["${kubernetes_service.ingress-nginx[0].load_balancer_ingress[0].ip}"]
 }
