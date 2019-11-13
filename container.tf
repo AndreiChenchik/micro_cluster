@@ -30,23 +30,6 @@ resource "kubernetes_pod" "container" {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
       }
-      
-          readiness_probe {
-      tcp_socket {
-        port = var.container_port
-        }
-      
-      initial_delay_seconds = 5
-      period_seconds        = 10
-      }
-    
-    liveness_probe {
-      tcp_socket {
-        port = var.container_port
-        }
-      initial_delay_seconds = 15
-      period_seconds        = 20
-      }
     }
     
     volume {
