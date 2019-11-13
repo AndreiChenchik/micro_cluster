@@ -4,12 +4,12 @@ resource "kubernetes_ingress" "ingress" {
   metadata {
     name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     
-    annotations = {
+#    annotations = {
 #      "kubernetes.io/ingress.class" = "nginx"
 #      "ingress.kubernetes.io/ssl-redirect" = "true"
 #      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
 #      "nginx.ingress.kubernetes.io/rewrite-target" = "/"
-    }
+#    }
   }
 
   spec {
