@@ -16,16 +16,15 @@ resource "kubernetes_pod" "container" {
   spec {
     container {
       image = "${var.docker_image}"
-      name  = "container"
       port {
         container_port = var.container_port
       }
-      env {
-        name = var.envs[0].name
-        value = var.envs[0].value
-        }
-      command = [var.command]
-      args = local.args
+#      env {
+#        name = var.envs[0].name
+#        value = var.envs[0].value
+#        }
+#      command = [var.command]
+#      args = local.args
       volume_mount {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
