@@ -4,17 +4,15 @@ resource "kubernetes_ingress" "ingress" {
   metadata {
     name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     
-#    annotations = {
-#      "kubernetes.io/ingress.class" = "nginx"
-#      "ingress.kubernetes.io/ssl-redirect" = "true"
-#      "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
-#      "nginx.ingress.kubernetes.io/rewrite-target" = "/"
-#    }
+    annotations = {
+      "kubernetes.io/ingress.global-static-ip-name" = "${google_compute_global_address.static[0].name}"
+      "ingress.kubernetes.io/force-ssl-redirect" = "true"
+    }
   }
 
   spec {
     rule {
-#      host = "${var.dns-subdomain}.${var.dns-zone}"
+      host = "${var.dns-subdomain}.${var.dns-zone}"
       http {
         path {
           path = "/"
@@ -26,42 +24,14 @@ resource "kubernetes_ingress" "ingress" {
         }
       }
     
-#    tls {
-#      hosts = ["${var.dns-subdomain}.${var.dns-zone}"]
-#      secret_name = "tls-cert"
-#    }
+    tls {
+      hosts = ["${var.dns-subdomain}.${var.dns-zone}"]
+      secret_name = "tls-cert"
+    }
   }
-  depends_on = [kubernetes_service.nodeport, kubernetes_service.ingress-nginx]
+  depends_on = [kubernetes_service.nodeport]
 }
 
-
-resource "kubernetes_service" "ingress-nginx" {
-  count = local.node_count != 1 ? 0 : 1
-  
-  metadata {
-    name = "ingress-nginx"
-  }
-  spec {
-    external_traffic_policy = "Local"
-    selector = {
-      "app.kubernetes.io/name" = "ingress-nginx"
-      "app.kubernetes.io/part-of" = "ingress-nginx"
-    }
-    port {
-      name = "http"
-      port = 80
-      target_port = "http"
-    }
-
-    port {
-      name = "https"
-      port = 443
-      target_port = "https"
-    }
-
-    type = "LoadBalancer"
-  }
-}
 
 resource "kubernetes_service" "nodeport" {
   count = local.node_count != 1 ? 0 : 1
