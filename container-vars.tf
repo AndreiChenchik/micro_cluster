@@ -6,7 +6,8 @@ variable "persistent-disk-name" {
   }
   
 variable "docker_image" {
-  default="jupyter/base-notebook:latest"
+  default = "nginx"
+#  default="jupyter/base-notebook:latest"
   }
   
 variable "mount_path" {
@@ -39,5 +40,6 @@ variable "jupyter_password" {
 }
 
 variable "container_port" {
-  default = 8888
+  default = 80
+#  default = 8888
   }
