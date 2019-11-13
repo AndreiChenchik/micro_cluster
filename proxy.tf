@@ -2,7 +2,7 @@ resource "kubernetes_ingress" "ingress2" {
   count = local.node_count != 1 ? 0 : 1
 
   metadata {
-    name = "container-ingress"
+    name = "container-ingress2"
     
     annotations = {
 #      "kubernetes.io/ingress.class" = "nginx"
