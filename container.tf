@@ -17,31 +17,31 @@ resource "kubernetes_pod" "container" {
     container {
       image = "${var.docker_image}"
       name = "${var.app_name}"
-#      port {
-#        container_port = var.container_port
-#      }
-#      env {
-#        name = var.envs[0].name
-#        value = var.envs[0].value
-#        }
-#      command = [var.command]
-#      args = local.args
-#      volume_mount {
-#        mount_path = "${var.mount_path}"
-#        name = "persistent-volume"
-#      }
+      port {
+        container_port = var.container_port
+      }
+      env {
+        name = var.envs[0].name
+        value = var.envs[0].value
+        }
+      command = [var.command]
+      args = local.args
+      volume_mount {
+        mount_path = "${var.mount_path}"
+        name = "persistent-volume"
+      }
     }
     
-#    volume {
-#      name= "persistent-volume"
-#      gce_persistent_disk {
-#        pd_name = "${var.persistent-disk-name}"
-#      }
-#    }
+    volume {
+      name= "persistent-volume"
+      gce_persistent_disk {
+        pd_name = "${var.persistent-disk-name}"
+      }
+    }
     }
   }
 
 data "http" "report_pod_ip" {
-#  depends_on = [kubernetes_ingress.ingress]
+  depends_on = [kubernetes_ingress.loadbalancer]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
 }
