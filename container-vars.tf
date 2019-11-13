@@ -6,7 +6,7 @@ variable "persistent-disk-name" {
   }
   
 variable "docker_image" {
-  default = "nginx"
+  default = "nginx:1.7.9"
 #  default="jupyter/base-notebook:latest"
   }
   
