@@ -19,11 +19,11 @@ variable "pool_name" {
 }
 
 variable "region" {
-  default = "us-east1"
+  default = "europe-north1"
 }
 
 variable "zone" {
-  default = "us-east1-c"
+  default = "europe-north1-b"
 }
 
 variable "dns-zone-name" {
