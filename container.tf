@@ -31,12 +31,12 @@ resource "kubernetes_pod" "container" {
         name = "persistent-volume"
       }
       
-      resources {
-        limits {
-          cpu = "800m"
-          memory = "32Gi"
-        }
-      }
+#      resources {
+#        limits {
+#          cpu = "800m"
+#          memory = "32Gi"
+#        }
+#      }
       
     }
     
