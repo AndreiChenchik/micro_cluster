@@ -32,6 +32,13 @@ resource "kubernetes_pod" "container" {
       }
     }
     
+    resources {
+      limits {
+        cpu = "800m"
+        memory = "32Gi"
+      }
+    }
+    
     volume {
       name= "persistent-volume"
       gce_persistent_disk {
