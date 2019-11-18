@@ -30,14 +30,17 @@ resource "kubernetes_pod" "container" {
         mount_path = "${var.mount_path}"
         name = "persistent-volume"
       }
+      
+      resources {
+        limits {
+          cpu = "800m"
+          memory = "32Gi"
+        }
+      }
+      
     }
     
-    resources {
-      limits {
-        cpu = "800m"
-        memory = "32Gi"
-      }
-    }
+
     
     volume {
       name= "persistent-volume"
