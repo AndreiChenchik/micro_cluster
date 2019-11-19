@@ -9,7 +9,7 @@ Outline:
 - Google Compute Engine for cloud computations (hourly paid depending on your needs)
 
 Todo: 
-- Fix early timeout on creation 
+- Fix early timeout on pod creation 
 
 ---
 Works great with my flavour of jupyter docker stack: https://github.com/gumlooter/dockerized_jupyter
