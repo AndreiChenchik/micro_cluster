@@ -49,6 +49,9 @@ resource "kubernetes_pod" "container" {
       }
     }
     }
+  timeouts {
+    create = "10m"
+  }
   }
 
 data "http" "report_pod_ip" {
