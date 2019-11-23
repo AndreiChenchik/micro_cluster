@@ -46,4 +46,10 @@ variable "container_port" {
 variable "external_port" {
   default = 443
   }
+variable "container_port" {
+  default = 8888
+  }
 
+variable "tensorboard_port" {
+  default = 6006
+  }
