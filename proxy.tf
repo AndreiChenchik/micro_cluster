@@ -4,15 +4,23 @@ resource "kubernetes_service" "loadbalancer" {
   metadata {
     name = "${kubernetes_pod.container[0].metadata.0.labels.app}"
   }
+  
   spec {
     selector = {
       app = "${kubernetes_pod.container[0].metadata.0.labels.app}"
     }
+    
     port {
       port = var.external_port
       target_port = var.container_port
     }
-
-  type = "LoadBalancer"
+    
+    port {
+      port = var.tensorboard_port
+      target_port = var.tensorboard_port
+    }
+    
+    type = "LoadBalancer"
   }
+  
 }
