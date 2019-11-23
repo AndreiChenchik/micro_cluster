@@ -11,11 +11,13 @@ resource "kubernetes_service" "loadbalancer" {
     }
     
     port {
+      name = 'jupyter'
       port = var.external_port
       target_port = var.container_port
     }
     
     port {
+      name = 'tensorboard'
       port = var.tensorboard_port
       target_port = var.tensorboard_port
     }
