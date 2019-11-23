@@ -9,7 +9,6 @@ Outline:
 - Google Compute Engine for cloud computations (hourly paid depending on your needs)
 
 Todo: 
-- Fix early timeout on pod creation
 - Detach container instructions as separate terraform module
 
 ---
