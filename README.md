@@ -10,7 +10,7 @@ Outline:
 
 Todo: 
 - Fix early timeout on pod creation
-- Detach container instructions as separate module
+- Detach container instructions as separate terraform module
 
 ---
 Works great with my flavour of jupyter docker stack: https://github.com/gumlooter/dockerized_jupyter
