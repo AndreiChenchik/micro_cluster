@@ -50,3 +50,7 @@ variable "external_port" {
 variable "tensorboard_port" {
   default = 6006
   }
+
+variable "caddy_port" {
+  default = 2015
+  }
