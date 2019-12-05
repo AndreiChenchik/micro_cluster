@@ -44,7 +44,6 @@ resource "kubernetes_service" "nodeport" {
       name = "caddy"
       port = var.caddy_port
       target_port = var.caddy_port
-      node_port = 30001
     }
     
     type = "NodePort"
