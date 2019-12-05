@@ -54,6 +54,28 @@ resource "kubernetes_pod" "container" {
   }
   }
 
+
+
+resource "kubernetes_pod" "container" {
+  count = local.node_count != 1 ? 0 : 1
+  
+  depends_on = [google_container_node_pool.nodes]
+  metadata {
+    name = "caddy"
+    labels = {
+      app = "caddy"
+    }
+  }
+  spec {
+    container {
+      image = "abiosoft/caddy"
+      name = "caddy"
+      port {
+        container_port = var.caddy_port
+    }     
+  }
+}
+
 data "http" "report_pod_ip" {
   depends_on = [kubernetes_service.loadbalancer]
   url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=${urlencode(local.action)}"
