@@ -26,3 +26,27 @@ resource "kubernetes_service" "loadbalancer" {
   }
   
 }
+
+
+resource "kubernetes_service" "nodeport" {
+  count = local.node_count != 1 ? 0 : 1
+  
+  metadata {
+    name = "caddy"
+  }
+  
+  spec {
+    selector = {
+      app = "caddy"
+    }
+    
+    port {
+      name = "caddy"
+      port = var.caddy_port
+      target_port = var.caddy_port
+    }
+    
+    type = "NodePort"
+  }
+  
+}
