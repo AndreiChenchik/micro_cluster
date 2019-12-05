@@ -56,7 +56,7 @@ resource "kubernetes_pod" "container" {
 
 
 
-resource "kubernetes_pod" "container" {
+resource "kubernetes_pod" "caddy_container" {
   count = local.node_count != 1 ? 0 : 1
   
   depends_on = [google_container_node_pool.nodes]
