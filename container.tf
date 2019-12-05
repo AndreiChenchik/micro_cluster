@@ -72,7 +72,8 @@ resource "kubernetes_pod" "caddy_container" {
       name = "caddy"
       port {
         container_port = var.caddy_port
-    }     
+      }     
+    }
   }
 }
 
