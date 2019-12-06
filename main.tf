@@ -96,10 +96,6 @@ data "google_compute_instance" "node_info" {
   count = local.node_count != 1 ? 0 : 1
   self_link = local.nodes_list[0]
 }
-  
-locals {
-  nodes_name = [data.google_compute_instance.node_info[0].name]
-} 
 
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
@@ -108,7 +104,6 @@ resource "google_compute_firewall" "default" {
  
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
-  target_tags = local.nodes_name
 
   allow {
     protocol = "tcp"
