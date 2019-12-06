@@ -98,10 +98,9 @@ data "google_compute_instance" "node_info" {
 }
 
 # expose nodeport to external network
-resource "google_compute_firewall" "default" {
-  
+resource "google_compute_firewall" "default" {  
   count = local.node_count != 1 ? 0 : 1
- address 
+  
   depends_on = [google_container_node_pool.nodes]
  
   name    = "nodeport-firewall"
