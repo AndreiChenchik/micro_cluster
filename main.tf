@@ -76,8 +76,10 @@ module "jupyter" {
   
 # get pool nodes info
 data "google_compute_instance_group" "pool_info" {
-  count = local.node_count != 1 ? 0 : 1
   depends_on = [google_container_node_pool.nodes]
+  
+  count = local.node_count != 1 ? 0 : 1
+
   self_link = google_container_cluster.primary.instance_group_urls[0]
 }
 
@@ -89,6 +91,8 @@ locals {
  
 # get first node info
 data "google_compute_instance" "node_info" {
+  depends_on = [google_container_node_pool.nodes]
+  
   count = local.node_count != 1 ? 0 : 1
   self_link = local.nodes_list[0]
 }
@@ -96,6 +100,8 @@ data "google_compute_instance" "node_info" {
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
   count = local.node_count != 1 ? 0 : 1
+  depends_on = [google_container_node_pool.nodes]
+ 
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
   target_tags = [data.google_compute_instance.node_info[0].name]
