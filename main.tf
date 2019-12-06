@@ -94,5 +94,5 @@ module "libcloud-dynamic-dns" {
   source = "github.com/gumlooter/libcloud-dynamic-dns"
   module_count = 1 # 0 to turn it off
   node_pool = google_container_node_pool.nodes
-  persistent_disk = var.persistent-disk-name
+  persistent_disk = var.ddns-config-disk
 }
