@@ -98,4 +98,8 @@ resource "google_dns_record_set" "a-record" {
   rrdatas = [module.jupyter.external_ip]
 }
   
-
+# get nodes info
+data "google_compute_instance" "appserver" {
+  name = "gke-${var.cluster_name}-${var.pool_name}-*"
+  zone = var.zone
+}
