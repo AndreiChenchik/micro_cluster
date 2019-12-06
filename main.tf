@@ -7,15 +7,15 @@ locals {
 # auth to google cloud
 provider "google" {
  credentials = var.credentials
- project     = "${var.project_id}"
- region      = "${var.region}"
- zone        = "${var.zone}"
+ project     = var.project_id
+ region      = var.region
+ zone        = var.zone
 }
 
 # create cluster
 resource "google_container_cluster" "primary" {
-  name     = "${var.cluster_name}"
-  location = "${var.zone}"
+  name     = var.cluster_name
+  location = var.zone
 
   remove_default_node_pool = true
   initial_node_count = 1
@@ -32,9 +32,9 @@ resource "google_container_cluster" "primary" {
 
 # create node pool
 resource "google_container_node_pool" "nodes" {
-  name       = "${var.pool_name}"
-  location   = "${var.zone}"
-  cluster    = "${google_container_cluster.primary.name}"
+  name       = var.pool_name
+  location   = var.zone
+  cluster    = google_container_cluster.primary.name
   node_count = local.node_count
 
   node_config {
@@ -60,7 +60,7 @@ provider "kubernetes" {
   load_config_file = false
   host = "https://${google_container_cluster.primary.endpoint}"
   cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
-  token = "${data.google_client_config.current.access_token}"
+  token = data.google_client_config.current.access_token
 }
 
 # deploy jupyter
@@ -82,6 +82,6 @@ resource "google_dns_record_set" "a-record" {
   name = "${var.dns-subdomain}.${var.dns-zone}."
   type = "A"
   ttl  = 60
-  managed_zone = "${var.dns-zone-name}"
-  rrdatas = ["${module.jupyter.external_ip}"]
+  managed_zone = var.dns-zone-name
+  rrdatas = [module.jupyter.external_ip]
 }
