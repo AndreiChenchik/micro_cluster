@@ -1,13 +1,10 @@
+# preload config files
 locals {
   node_count = tonumber(chomp(file("${path.module}/node_count")))
   node_type = chomp(file("${path.module}/node_type"))
-  container_path = local.node_count != 1 ? "./pod/empty" : "./pod"
 }
 
-data "http" "report_terraforming" {
-  	url = "https://api.telegram.org/bot${var.bot_auth}/sendMessage?chat_id=${var.bot_chatid}&text=Terraforming%20Started"
-}
-
+# auth to google cloud
 provider "google" {
  credentials = var.credentials
  project     = "${var.project_id}"
@@ -15,7 +12,7 @@ provider "google" {
  zone        = "${var.zone}"
 }
 
-
+# create cluster
 resource "google_container_cluster" "primary" {
   name     = "${var.cluster_name}"
   location = "${var.zone}"
@@ -33,6 +30,7 @@ resource "google_container_cluster" "primary" {
   }
 }
 
+# create node pool
 resource "google_container_node_pool" "nodes" {
   name       = "${var.pool_name}"
   location   = "${var.zone}"
@@ -54,12 +52,24 @@ resource "google_container_node_pool" "nodes" {
   }
 }
 
-# Query my Terraform service account from GCP
+# query my Terraform service account from GCP
 data "google_client_config" "current" {}
 
+# define provider
 provider "kubernetes" {
   load_config_file = false
   host = "https://${google_container_cluster.primary.endpoint}"
   cluster_ca_certificate = "${base64decode(google_container_cluster.primary.master_auth.0.cluster_ca_certificate)}"
   token = "${data.google_client_config.current.access_token}"
+}
+
+# deploy jupyter
+module "jupyter" {
+  source = "git@github.com:gumlooter/dockerized_jupyter.git"
+  module_count = local.node_count
+  node_pool = google_container_node_pool.nodes
+  persistent_disk = var.persistent-disk-name
+  external_port = 443
+  public_url = "https://${var.dns_subdomain}.${var.dns-zone}"
+  password = var.jupyter_password
 }
