@@ -80,7 +80,7 @@ resource "google_compute_firewall" "default" {
   
   depends_on = [google_container_node_pool.nodes]
  
-  name    = "nodeport-firewall"
+  name    = "nodeport-firewall-${formatdate("DDMMMYYYY", timestamp())}"
   network = google_container_cluster.primary.network
 
   allow {
