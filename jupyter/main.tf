@@ -7,7 +7,6 @@ resource "kubernetes_deployment" "jupyter_deployment" {
   depends_on = [var.node_pool]
 
   spec {
-    
     # we need only one replica of the service
     replicas = 1
 
