@@ -1,17 +1,21 @@
 # Jupyter Notebook
 resource "kubernetes_deployment" "jupyter_deployment" {
-  # create resource only if there is any nodes
+  # create resource only if there it's required
   count = var.onoff_switch
   
   # wait for gke node pool
-  depends_on = var.dependency_list
+  depends_on = [var.node_pool]
 
   spec {
+    
+    # we need only one replica of the service
     replicas = 1
+
+    # pod configuration
     template {
       metadata {
         labels = {
-          app = var.command
+          app = var.app_name
         }
       }
 
@@ -53,5 +57,27 @@ resource "kubernetes_deployment" "jupyter_deployment" {
         }
       }      
     }
+  }
+}
+
+# Load balancer to drive external traffic
+resource "kubernetes_service" "jupyter_loadbalancer" {
+  # create resource only if there it's required
+  count = var.onoff_switch
+  
+  spec {
+    selector = {
+      # choose only jupyter
+      app = var.app_name
+    }
+    
+    port {
+      # expose main port of jupyter container
+      name = "main_port"
+      port = var.external_port
+      target_port = var.jupyter_port
+    }    
+  
+    type = "LoadBalancer"
   }
 }
