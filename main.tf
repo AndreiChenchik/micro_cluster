@@ -115,14 +115,6 @@ resource "google_compute_firewall" "default" {
 # get node ip
 locals {                                                            
   ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info[0].network_interface[0].access_config[0].nat_ip : "127.0.0.1"
-}  
-
-# reserve ip
-resource "google_compute_address" "ip_address" {
-  count = local.node_count != 1 ? 0 : 1
-  
-  address = local.ip
-  name = "my-address"
 }
   
 # assign dns name  
