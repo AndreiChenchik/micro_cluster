@@ -83,5 +83,5 @@ resource "google_dns_record_set" "a-record" {
   type = "A"
   ttl  = 60
   managed_zone = "${var.dns-zone-name}"
-  rrdatas = ["${module.jupyter.kubernetes_service.jupyter_loadbalancer[0].load_balancer_ingress.0.ip}"]
+  rrdatas = ["${module.jupyter.external_ip}"]
 }
