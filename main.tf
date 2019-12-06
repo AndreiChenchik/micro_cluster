@@ -86,7 +86,7 @@ data "google_compute_instance_group" "pool_info" {
 # workaround to iterate over instances
 locals {                                                            
   nodes_string = local.node_count != 1 ? "," : join(",", data.google_compute_instance_group.pool_info[0].instances)
-  nodes_list = split(",", local.nodes_string)             
+  nodes_list = split(",", local.nodes_string) 
 }  
  
 # get first node info
@@ -97,6 +97,10 @@ data "google_compute_instance" "node_info" {
   self_link = local.nodes_list[0]
 }
   
+locals {
+  nodes_name = [data.google_compute_instance.node_info[0].name]
+} 
+
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
   count = local.node_count != 1 ? 0 : 1
@@ -104,7 +108,7 @@ resource "google_compute_firewall" "default" {
  
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
-  target_tags = [data.google_compute_instance.node_info[0].name]
+  target_tags = local.nodes_name
 
   allow {
     protocol = "tcp"
