@@ -106,19 +106,19 @@ resource "google_compute_firewall" "default" {
   }
 }
 
-# get ips
-locals {                                                            
-  ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info.network_interface.access_config.nat_ip : "127.0.0.1"
-}  
-  
-# assign dns name  
-resource "google_dns_record_set" "a-record" {
-  # only if running
-  count = local.node_count != 1 ? 0 : 1
-  
-  name = "${var.dns-subdomain}.${var.dns-zone}."
-  type = "A"
-  ttl  = 60
-  managed_zone = var.dns-zone-name
-  rrdatas = [local.ip]
-}
+## get ips
+#locals {                                                            
+#  ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info.network_interface.access_config.nat_ip : "127.0.0.1"
+#}  
+#  
+## assign dns name  
+#resource "google_dns_record_set" "a-record" {
+#  # only if running
+#  count = local.node_count != 1 ? 0 : 1
+#  
+#  name = "${var.dns-subdomain}.${var.dns-zone}."
+#  type = "A"
+#  ttl  = 60
+#  managed_zone = var.dns-zone-name
+#  rrdatas = [local.ip]
+#}
