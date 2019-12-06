@@ -1,11 +1,11 @@
 # external variables 
 variable "onoff_switch" {}
-variable "dependency_list" {}
+variable "node_pool" {}
 variable "public_url" {}
 variable "password" {}
 variable "persistent_disk" {}
 variable "app_name" {}
-variable "jupyter_port" {}
+variable "external_port" {}
 
 #internal variables
 variable "jupyter.app_name" {
@@ -30,7 +30,9 @@ variable "envs" {
 }
 
 variable "command" {
-  default="start-notebook.sh"
+  default = [
+    "start-notebook.sh"
+  ]
 }
 
 variable "args" {
@@ -39,12 +41,14 @@ variable "args" {
     "--NotebookApp.ip='0.0.0.0'",
     "--NotebookApp.token=''",
     "--NotebookApp.keyfile=/home/jovyan/work/cert/notebook.key",
-    "--NotebookApp.certfile=/home/jovyan/work/cert/notebook.crt",
-    "--NotebookApp.custom_display_url=${var.public_url}",
-    "--NotebookApp.password=${var.password}"
+    "--NotebookApp.certfile=/home/jovyan/work/cert/notebook.crt"
   ]
 }
 
 variable "terraform_timeout" {
   default = "10m"
+}
+
+variable "jupyter_port" {
+  default = "8888"
 }
