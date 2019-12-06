@@ -74,18 +74,35 @@ module "jupyter" {
   password = var.jupyter_password
 }
   
+# get pool nodes info
+data "google_compute_instance_group" "pool_info" {
+  depends_on = [google_container_node_pool.nodes]
+  self_link = google_container_cluster.primary.instance_group_urls[0]
+}
+
+# workaround to iterate over instances
+locals {                                                            
+  nodes_string = join(",", data.google_compute_instance_group.pool_info.instances)
+  nodes_list = split(",", local.nodes_string)             
+}  
+ 
+# get first node info
+data "google_compute_instance" "node_info" {
+  self_link = local.nodes_list[0]
+}
+  
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
+  target_tags = [data.google_compute_instance.node_info.name]
 
   allow {
     protocol = "tcp"
     ports    = [var.jupyter_port]
   }
-
 }
-  
+
 # assign dns name  
 resource "google_dns_record_set" "a-record" {
   # only if running
@@ -95,21 +112,5 @@ resource "google_dns_record_set" "a-record" {
   type = "A"
   ttl  = 60
   managed_zone = var.dns-zone-name
-  rrdatas = [module.jupyter.external_ip]
-}
-  
-# get pool nodes info
-data "google_compute_instance_group" "pool_info" {
-  self_link = google_container_cluster.primary.instance_group_urls[0]
-}
-
-# workaround to iterate over instances
-locals {                                                            
-  nodes_string = join(",", data.google_compute_instance_group.pool_info.instances)
-  nodes_list = split(",", local.nodes_string)             
-}  
-  
-# get first node info
-data "google_compute_instance" "node_info" {
-  self_link = local.nodes_list[0]
+  rrdatas = [data.google_compute_instance.node_info.network_interface.access_config.nat_ip]
 }
