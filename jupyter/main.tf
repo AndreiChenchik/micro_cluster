@@ -9,7 +9,7 @@ resource "kubernetes_deployment" "jupyter_deployment" {
   count = var.onoff_switch
   
   # wait for gke node pool
-  depends_on = [var.node_pool]
+  depends_on = var.dependency_list
 
   spec {
     replicas = 1
