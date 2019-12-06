@@ -99,7 +99,9 @@ data "google_compute_instance" "node_info" {
 
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
+  
   count = local.node_count != 1 ? 0 : 1
+ address 
   depends_on = [google_container_node_pool.nodes]
  
   name    = "nodeport-firewall"
@@ -115,6 +117,14 @@ resource "google_compute_firewall" "default" {
 locals {                                                            
   ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info[0].network_interface[0].access_config[0].nat_ip : "127.0.0.1"
 }  
+
+# reserve ip
+resource "google_compute_address" "ip_address" {
+  count = local.node_count != 1 ? 0 : 1
+  
+  address = local.ip
+  name = "my-address"
+}
   
 # assign dns name  
 resource "google_dns_record_set" "a-record" {
