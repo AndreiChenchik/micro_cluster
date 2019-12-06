@@ -73,3 +73,15 @@ module "jupyter" {
   public_url = "https://${var.dns_subdomain}.${var.dns-zone}"
   password = var.jupyter_password
 }
+  
+# assign dns name  
+resource "google_dns_record_set" "a-record" {
+  # only if running
+  count = local.node_count != 1 ? 0 : 1
+  
+  name = "${var.dns-subdomain}.${var.dns-zone}."
+  type = "A"
+  ttl  = 60
+  managed_zone = "${var.dns-zone-name}"
+  rrdatas = ["${module.jupyter.kubernetes_service.jupyter_loadbalancer[0].load_balancer_ingress.0.ip}"]
+}
