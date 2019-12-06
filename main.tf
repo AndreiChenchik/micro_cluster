@@ -77,7 +77,7 @@ module "jupyter" {
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
   name    = "nodeport-firewall"
-  network = google_container_node_pool.nodes[0].network
+  network = google_container_cluster.primary.network
 
   allow {
     protocol = "tcp"
