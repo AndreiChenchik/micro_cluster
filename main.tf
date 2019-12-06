@@ -102,8 +102,14 @@ resource "google_dns_record_set" "a-record" {
 data "google_compute_instance_group" "pool_info" {
   self_link = google_container_cluster.primary.instance_group_urls[0]
 }
+
+# workaround to iterate over instances
+locals {                                                            
+  nodes_string = join(",", data.google_compute_instance_group.pool_info.instances)
+  nodes_list = split(",", local.nodes_string)             
+}  
   
 # get first node info
 data "google_compute_instance" "node_info" {
-  self_link = data.google_compute_instance_group.pool_info[0]
+  self_link = local.nodes_list[0]
 }
