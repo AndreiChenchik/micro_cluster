@@ -1,14 +1,13 @@
-variable "credentials" {
-}
-
-variable "bot_auth" {
-}
-
-variable "bot_chatid" {
-}
-
-variable "project_id" {
-}
+variable "credentials" {}
+variable "bot_auth" {}
+variable "bot_chatid" {}
+variable "project_id" {}
+variable "dns-zone-name" {}
+variable "dns-zone" {}
+variable "dns-subdomain" {}
+variable "email" {}
+variable "jupyter_password" {}
+variable "persistent-disk-name" {}
 
 variable "cluster_name" {
   default = "default-cluster"
@@ -26,15 +25,3 @@ variable "zone" {
   default = "europe-north1-b"
 }
 
-variable "dns-zone-name" {
-  }
-
-variable "dns-zone" {
-  }
-
-variable "dns-subdomain" {
-  }
-
-variable "email" {}
-
-variable "jupyter_password" {}
