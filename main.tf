@@ -74,29 +74,6 @@ module "jupyter" {
   password = var.jupyter_password
 }
   
-# get pool nodes info
-data "google_compute_instance_group" "pool_info" {
-  depends_on = [google_container_node_pool.nodes]
-  
-  count = local.node_count != 1 ? 0 : 1
-
-  self_link = google_container_cluster.primary.instance_group_urls[0]
-}
-
-# workaround to iterate over instances
-locals {                                                            
-  nodes_string = local.node_count != 1 ? "," : join(",", data.google_compute_instance_group.pool_info[0].instances)
-  nodes_list = split(",", local.nodes_string) 
-}  
- 
-# get first node info
-data "google_compute_instance" "node_info" {
-  depends_on = [google_container_node_pool.nodes]
-  
-  count = local.node_count != 1 ? 0 : 1
-  self_link = local.nodes_list[0]
-}
-
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {  
   count = local.node_count != 1 ? 0 : 1
@@ -112,19 +89,10 @@ resource "google_compute_firewall" "default" {
   }
 }
 
-# get node ip
-locals {                                                            
-  ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info[0].network_interface[0].access_config[0].nat_ip : "127.0.0.1"
-}
-  
-# assign dns name  
-resource "google_dns_record_set" "a-record" {
-  # only if running
-  count = local.node_count != 1 ? 0 : 1
-  
-  name = "${var.dns-subdomain}.${var.dns-zone}."
-  type = "A"
-  ttl  = 60
-  managed_zone = var.dns-zone-name
-  rrdatas = [local.ip]
+# deploy dns assigner
+module "libcloud-dynamic-dns" {
+  source = "github.com/gumlooter/libcloud-dynamic-dns"
+  module_count = 1 # 0 to turn it off
+  node_pool = google_container_node_pool.nodes
+  persistent_disk = var.persistent-disk-name
 }
