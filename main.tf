@@ -98,7 +98,12 @@ resource "google_dns_record_set" "a-record" {
   rrdatas = [module.jupyter.external_ip]
 }
   
-# get nodes info
+# get pool nodes info
 data "google_compute_instance_group" "pool_info" {
   self_link = google_container_cluster.primary.instance_group_urls[0]
+}
+  
+# get first node info
+data "google_compute_instance_group" "node_info" {
+  self_link = google_compute_instance_group.pool_info.instances[0]
 }
