@@ -1,8 +1,3 @@
-# Calculate args variable
-locals {
-  args = concat(var.args, ["--NotebookApp.custom_display_url=${var.public_url}","--NotebookApp.password=${var.password}"])
-}
-
 # Jupyter Notebook
 resource "kubernetes_deployment" "jupyter_deployment" {
   # create resource only if there is any nodes
