@@ -106,6 +106,11 @@ resource "google_compute_firewall" "default" {
   }
 }
 
+# get ips
+locals {                                                            
+  ip = local.node_count != 1 ? "127.0.0.1" : data.google_compute_instance.node_info[0].network_interface.access_config.nat_ip          
+}  
+  
 # assign dns name  
 resource "google_dns_record_set" "a-record" {
   # only if running
@@ -115,5 +120,5 @@ resource "google_dns_record_set" "a-record" {
   type = "A"
   ttl  = 60
   managed_zone = var.dns-zone-name
-  rrdatas = [data.google_compute_instance.node_info[0].network_interface.access_config.nat_ip]
+  rrdatas = [local.ip]
 }
