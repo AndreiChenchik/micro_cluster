@@ -76,26 +76,29 @@ module "jupyter" {
   
 # get pool nodes info
 data "google_compute_instance_group" "pool_info" {
+  count = local.node_count != 1 ? 0 : 1
   depends_on = [google_container_node_pool.nodes]
   self_link = google_container_cluster.primary.instance_group_urls[0]
 }
 
 # workaround to iterate over instances
 locals {                                                            
-  nodes_string = join(",", data.google_compute_instance_group.pool_info.instances)
+  nodes_string = local.node_count != 1 ? "," : join(",", data.google_compute_instance_group.pool_info[0].instances)
   nodes_list = split(",", local.nodes_string)             
 }  
  
 # get first node info
 data "google_compute_instance" "node_info" {
+  count = local.node_count != 1 ? 0 : 1
   self_link = local.nodes_list[0]
 }
   
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {
+  count = local.node_count != 1 ? 0 : 1
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
-  target_tags = [data.google_compute_instance.node_info.name]
+  target_tags = [data.google_compute_instance.node_info[0].name]
 
   allow {
     protocol = "tcp"
@@ -112,5 +115,5 @@ resource "google_dns_record_set" "a-record" {
   type = "A"
   ttl  = 60
   managed_zone = var.dns-zone-name
-  rrdatas = [data.google_compute_instance.node_info.network_interface.access_config.nat_ip]
+  rrdatas = [data.google_compute_instance.node_info[0].network_interface.access_config.nat_ip]
 }
