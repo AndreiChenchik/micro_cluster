@@ -7,6 +7,7 @@ variable "dns-zone" {}
 variable "dns-subdomain" {}
 variable "email" {}
 variable "jupyter_password" {}
+variable "jupyter_port" {}
 variable "persistent-disk-name" {}
 
 variable "cluster_name" {
