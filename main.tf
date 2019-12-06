@@ -98,7 +98,7 @@ resource "google_compute_firewall" "default" {
   count = local.node_count != 1 ? 0 : 1
   name    = "nodeport-firewall"
   network = google_container_cluster.primary.network
-  target_tags = [data.google_compute_instance.node_info.name]
+  target_tags = [data.google_compute_instance.node_info[0].name]
 
   allow {
     protocol = "tcp"
