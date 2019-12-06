@@ -69,9 +69,21 @@ module "jupyter" {
   module_count = local.node_count
   node_pool = google_container_node_pool.nodes
   persistent_disk = var.persistent-disk-name
-  external_port = 443
-  public_url = "https://${var.dns-subdomain}.${var.dns-zone}"
+  external_port = var.jupyter_port
+  public_url = "https://${var.dns-subdomain}.${var.dns-zone}:30003"
   password = var.jupyter_password
+}
+  
+# expose nodeport to external network
+resource "google_compute_firewall" "default" {
+  name    = "nodeport-firewall"
+  network = google_container_node_pool.nodes.network
+
+  allow {
+    protocol = "tcp"
+    ports    = [var.jupyter_port]
+  }
+
 }
   
 # assign dns name  
@@ -85,3 +97,5 @@ resource "google_dns_record_set" "a-record" {
   managed_zone = var.dns-zone-name
   rrdatas = [module.jupyter.external_ip]
 }
+  
+
