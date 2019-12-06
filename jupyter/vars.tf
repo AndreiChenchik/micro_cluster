@@ -1,6 +1,6 @@
 # external variables 
 variable "onoff_switch" {}
-variable "node_pool" {}
+variable "dependency_list" {}
 variable "public_url" {}
 variable "password" {}
 variable "persistent_disk" {}
