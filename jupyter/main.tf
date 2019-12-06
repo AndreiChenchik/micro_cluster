@@ -6,7 +6,7 @@
 #  node_pool = google_container_node_pool.nodes
 #  persistent_disk = "development-storage"
 #  external_port = 443
-#  public_url = "http://jupyter.example.com"
+#  public_url = "https://jupyter.example.com"
 #  password = "sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e"
 #}
 
