@@ -100,6 +100,6 @@ resource "google_dns_record_set" "a-record" {
   
 # get nodes info
 data "google_compute_instance_group" "pool_info" {
-  self_link = google_container_cluster.primary.instance_group_urls
+  self_link = google_container_cluster.primary.instance_group_urls[0]
   zone = var.zone
 }
