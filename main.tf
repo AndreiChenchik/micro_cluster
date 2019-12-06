@@ -104,6 +104,6 @@ data "google_compute_instance_group" "pool_info" {
 }
   
 # get first node info
-data "google_compute_instance_group" "node_info" {
-  self_link = google_compute_instance_group.pool_info.instances[0]
+data "google_compute_instance" "node_info" {
+  self_link = data.google_compute_instance_group.pool_info.instances[0]
 }
