@@ -70,7 +70,7 @@ module "jupyter" {
   node_pool = google_container_node_pool.nodes
   persistent_disk = var.persistent-disk-name
   external_port = var.jupyter_port
-  public_url = "https://${var.dns-subdomain}.${var.dns-zone}:30003"
+  public_url = "https://${var.dns-subdomain}.${var.dns-zone}:${var.jupyter_port}"
   password = var.jupyter_password
 }
   
