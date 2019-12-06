@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "jupyter_deployment" {
       spec {
         container {
           image = var.image
-          command = [var.command]
+          command = var.command
           args = local.args      
           
           # all the jupyter settings
