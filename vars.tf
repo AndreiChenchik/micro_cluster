@@ -9,6 +9,7 @@ variable "email" {}
 variable "jupyter_password" {}
 variable "jupyter_port" {}
 variable "persistent-disk-name" {}
+variable "ddns-config-disk" {}
 
 variable "cluster_name" {
   default = "default-cluster"
