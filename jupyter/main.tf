@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "jupyter_deployment" {
   }
 }
 
-# Load balancer to drive external traffic
+# load balancer to drive external traffic to pod
 resource "kubernetes_service" "jupyter_loadbalancer" {
   # create resource only if there it's required
   count = var.onoff_switch
