@@ -106,10 +106,10 @@ resource "google_compute_firewall" "default" {
   }
 }
 
-## get ips
-#locals {                                                            
-#  ip = data.google_compute_instance.node_info != [] ? data.google_compute_instance.node_info.network_interface.access_config.nat_ip : "127.0.0.1"
-#}  
+# get ips
+locals {                                                            
+  ip = data.google_compute_instance.node_info[0] != null ? data.google_compute_instance.node_info[0].network_interface.access_config.nat_ip : "127.0.0.1"
+}  
 #  
 ## assign dns name  
 #resource "google_dns_record_set" "a-record" {
