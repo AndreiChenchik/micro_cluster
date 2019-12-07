@@ -145,31 +145,31 @@ resource "kubernetes_service" "node_port" {
     port {
       name = "10-port"
       port = 8010
-      node_port = var.additional_ports[0]
+      node_port = local.additional_ports[0]
     }
     
     port {
       name = "11-port"
       port = 8011
-      node_port = var.additional_ports[1]
+      node_port = local.additional_ports[1]
     }
     
     port {
       name = "12-port"
       port = 8012
-      node_port = var.additional_ports[2]
+      node_port = local.additional_ports[2]
     }
     
     port {
       name = "13-port"
       port = 8013
-      node_port = var.additional_ports[3]
+      node_port = local.additional_ports[3]
     }
     
     port {
       name = "14-port"
       port = 8014
-      node_port = var.additional_ports[4]
+      node_port = local.additional_ports[4]
     }
     
     type = "NodePort"
