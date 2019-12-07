@@ -75,7 +75,7 @@ resource "kubernetes_deployment" "main" {
           # data folder
           env {
             name = "PGDATA"
-            value = var.persistent_mount_path
+            value = "${var.persistent_mount_path}/pgdata"
           }  
           
           # expose ports
