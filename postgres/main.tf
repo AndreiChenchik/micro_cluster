@@ -38,8 +38,7 @@ resource "kubernetes_deployment" "main" {
 
       spec {
         container {
-          image = var.image
-          args = local.args      
+          image = var.image    
           
           # all the env settings
           # user
