@@ -60,7 +60,11 @@ resource "kubernetes_deployment" "main" {
           args = var.args
           image = var.image    
           
-
+          # password settings
+          env {
+            name = "PASSWORD"
+            value = var.password
+          }    
           
           # expose ports
           port {
