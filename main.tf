@@ -85,6 +85,22 @@ module "postgres" {
   password = var.postgres_password
 }
 
+# deploy code-server
+module "code-server" {
+  source = "./code-server"
+  module_count = 1 # 0 to turn it off
+  node_pool = google_container_node_pool.nodes
+  persistent_disk = var.coder_disk
+  external_port = var.coder_port
+  additional_ports = var.coder_additional_ports
+  password = var.coder_password
+}
+
+# combine all ports
+locals {
+  external_ports = concat([var.jupyter_port, var.postgres_port, var.coder_port], split(",", var.coder_additional_ports))         
+}
+
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {  
   count = local.node_count != 1 ? 0 : 1
