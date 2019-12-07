@@ -80,6 +80,11 @@ resource "kubernetes_deployment" "main" {
       }      
     }
   }
+  
+  # terraform: give container more time to load image (it's huge)
+  timeouts {
+    create = var.terraform_timeout
+  }
 }
 
 # add nodeport to drive external traffic to pod
