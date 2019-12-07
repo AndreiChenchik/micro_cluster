@@ -1,5 +1,5 @@
 # external variables 
-variable "onoff_switch" {}
+variable "module_count" {}
 variable "node_pool" {}
 variable "password" {}
 variable "user" {}
