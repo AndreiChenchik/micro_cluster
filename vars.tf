@@ -8,6 +8,8 @@ variable "dns-subdomain" {}
 variable "email" {}
 variable "jupyter_password" {}
 variable "jupyter_port" {}
+variable "postgres_user" {}
+variable "postgres_password" {}
 variable "persistent-disk-name" {}
 variable "ddns-config-disk" {}
 
