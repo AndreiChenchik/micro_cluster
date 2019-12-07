@@ -24,7 +24,7 @@ variable "image" {
 }
   
 variable "persistent_mount_path" {
-  default="/var/lib/postgresql/data/pgdata"
+  default="/var/lib/postgresql/data"
 }
 
 variable "main_port" {
