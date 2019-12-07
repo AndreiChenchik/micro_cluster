@@ -11,10 +11,6 @@ variable "app_name" {
   default="postgres"
 }
 
-variable "deployment_name" {
-  default="postgres-deployment"
-}
-
 variable "container_name" {
   default="postgres-container"
 }
