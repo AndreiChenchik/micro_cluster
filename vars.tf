@@ -17,6 +17,7 @@ variable "ddns-config-disk" {}
 variable "coder_port" {}
 variable "coder_password" {}
 variable "coder_disk" {}
+variable "coder_additional_ports" {}
 
 variable "cluster_name" {
   default = "default-cluster"
