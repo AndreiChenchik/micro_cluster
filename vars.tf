@@ -11,6 +11,7 @@ variable "jupyter_port" {}
 variable "postgres_user" {}
 variable "postgres_password" {}
 variable "postgres_port" {}
+variable "postgres_disk" {}
 variable "persistent-disk-name" {}
 variable "ddns-config-disk" {}
 
