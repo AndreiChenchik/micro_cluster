@@ -1,13 +1,13 @@
 # HOW TO USE:
 # add following to your terraform config
-#module "jupyter" {
-#  source = "git@github.com:gumlooter/dockerized_jupyter.git"
-#  count = 1 # 0 to turn it off
+#module "postgres" {
+#  source = "./postgres"
+#  module_count = 1 # 0 to turn it off
 #  node_pool = google_container_node_pool.nodes
-#  persistent_disk = "development-storage"
-#  external_port = 443
-#  public_url = "https://jupyter.example.com"
-#  password = "sha1:74ba40f8a388:c913541b7ee99d15d5ed31d4226bf7838f83a50e"
+#  persistent_disk = "db-storage"
+#  external_port = 35432
+#  user = "postgres"
+#  password = "mysecretpassword"
 #}
 
 # calculate local vars based on input vars
@@ -17,7 +17,7 @@ locals {
 }
 
 # schedule Jupyter Notebook
-resource "kubernetes_deployment" "jupyter_deployment" {
+resource "kubernetes_deployment" "main" {
   # create resource only if there it's required
   count = local.onoff_switch
   
@@ -39,14 +39,26 @@ resource "kubernetes_deployment" "jupyter_deployment" {
       spec {
         container {
           image = var.image
-          command = var.command
           args = local.args      
           
-          # all the jupyter settings
+          # all the env settings
+          # user
           env {
-            name = var.envs[0].name
-            value = var.envs[0].value
-          }     
+            name = "POSTGRES_USER"
+            value = var.user
+          }    
+          
+          # passsword
+          env {
+            name = "POSTGRES_PASSWORD"
+            value = var.password
+          }  
+          
+          # data folder
+          env {
+            name = "PGDATA"
+            value = var.persistent_mount_path
+          }  
           
           # expose ports
           port {
@@ -67,34 +79,36 @@ resource "kubernetes_deployment" "jupyter_deployment" {
             name = "persistent-volume"
           }      
         }
-        
-        # terraform: give container more time to load image (it's huge)
-        timeouts {
-          create = var.terraform_timeout
-        }
       }      
     }
   }
 }
 
-# add load balancer to drive external traffic to pod
-resource "kubernetes_service" "jupyter_loadbalancer" {
+# add nodeport to drive external traffic to pod
+resource "kubernetes_service" "node_port" {
   # create resource only if there it's required
-  count = var.onoff_switch
+  count = local.onoff_switch
+
+  metadata {
+    name = "postgres-nodeport"
+  }
+
+  # wait for deployment
+  depends_on = [kubernetes_deployment.main]
   
   spec {
     selector = {
-      # choose only jupyter
+      # choose only our app
       app = var.app_name
     }
     
     port {
-      # expose main port of jupyter container
-      name = "main_port"
-      port = var.external_port
-      target_port = var.jupyter_port
+      # expose main port of our container
+      name = "main-port"
+      port = var.main_port
+      node_port = var.external_port
     }    
   
-    type = "LoadBalancer"
+    type = "NodePort"
   }
 }
