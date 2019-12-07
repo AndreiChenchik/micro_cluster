@@ -112,7 +112,7 @@ resource "google_compute_firewall" "default" {
 
   allow {
     protocol = "tcp"
-    ports    = [var.jupyter_port, var.postgres_port]
+    ports    = local.external_ports
   }
 }
 
