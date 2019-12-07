@@ -20,6 +20,10 @@ locals {
 resource "kubernetes_deployment" "main" {
   # create resource only if there it's required
   count = local.onoff_switch
+
+  metadata {
+    name = var.deployment_name
+  }
   
   # wait for gke node pool
   depends_on = [var.node_pool]
@@ -27,7 +31,13 @@ resource "kubernetes_deployment" "main" {
   spec {
     # we need only one replica of the service
     replicas = 1
-
+    
+    selector {
+      match_labels = {
+        app = var.app_name
+      }
+    }
+    
     # pod configuration
     template {
       metadata {
@@ -37,7 +47,16 @@ resource "kubernetes_deployment" "main" {
       }
 
       spec {
+        # attach persistent-disk to node
+        volume {
+          name= "persistent-volume"
+          gce_persistent_disk {
+            pd_name = var.persistent_disk
+          }
+        }  
+        
         container {
+          name = var.container_name
           image = var.image    
           
           # all the env settings
@@ -62,14 +81,6 @@ resource "kubernetes_deployment" "main" {
           # expose ports
           port {
             container_port = var.main_port
-          }
-
-          # attach persistent-disk to node
-          volume {
-            name= "persistent-volume"
-            gce_persistent_disk {
-              pd_name = var.persistent_disk
-            }
           }
 
           # mount disk to container
