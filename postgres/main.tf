@@ -13,7 +13,7 @@
 # calculate local vars based on input vars
 locals {
   # decide to run or not to run based on count input
-  onoff_switch = var.count != 1 ? 0 : 1
+  onoff_switch = var.module_count != 1 ? 0 : 1
 }
 
 # schedule Jupyter Notebook
