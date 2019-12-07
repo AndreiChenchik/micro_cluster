@@ -28,7 +28,7 @@ variable "persistent_mount_path" {
 }
 
 variable "main_port" {
-  default = "8889"
+  default = "8080"
 }
 
 variable "command" {
