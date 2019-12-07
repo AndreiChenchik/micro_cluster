@@ -41,3 +41,7 @@ variable "args" {
     "--cert"
   ]
 }
+
+variable "terraform_timeout" {
+  default = "10m"
+}
