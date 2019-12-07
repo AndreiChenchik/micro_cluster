@@ -5,7 +5,7 @@
 #  module_count = 1 # 0 to turn it off
 #  node_pool = google_container_node_pool.nodes
 #  persistent_disk = "db-storage"
-#  external_port = 35432
+#  external_port = 30004
 #  user = "postgres"
 #  password = "mysecretpassword"
 #}
