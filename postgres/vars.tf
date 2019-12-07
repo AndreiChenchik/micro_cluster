@@ -11,6 +11,18 @@ variable "app_name" {
   default="postgres"
 }
 
+variable "deployment_name" {
+  default="postgres-deployment"
+}
+
+variable "container_name" {
+  default="postgres-container"
+}
+
+variable "deployment_name" {
+  default="postgres-deployment"
+}
+
 variable "image" {
   default="postgres:latest"
 }
