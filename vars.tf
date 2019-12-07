@@ -14,6 +14,9 @@ variable "postgres_port" {}
 variable "postgres_disk" {}
 variable "persistent-disk-name" {}
 variable "ddns-config-disk" {}
+variable "coder_port" {}
+variable "coder_password" {}
+variable "coder_disk" {}
 
 variable "cluster_name" {
   default = "default-cluster"
