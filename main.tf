@@ -73,7 +73,18 @@ module "jupyter" {
   public_url = "https://${var.dns-subdomain}.${var.dns-zone}:${var.jupyter_port}"
   password = var.jupyter_password
 }
-  
+
+# deploy postgres
+module "postgres" {
+  source = "./postgres"
+  module_count = local.node_count
+  node_pool = google_container_node_pool.nodes
+  persistent_disk = var.postgres_disk
+  external_port = var.postgres_port
+  user = var.postgres_user
+  password = var.postgres_password
+}
+
 # expose nodeport to external network
 resource "google_compute_firewall" "default" {  
   count = local.node_count != 1 ? 0 : 1
