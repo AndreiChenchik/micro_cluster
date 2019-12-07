@@ -4,6 +4,7 @@ variable "node_pool" {}
 variable "password" {}
 variable "persistent_disk" {}
 variable "external_port" {}
+variable "additional_ports" {}
 
 #internal variables
 variable "app_name" {
