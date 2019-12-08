@@ -122,4 +122,9 @@ module "libcloud-dynamic-dns" {
   module_count = local.node_count # 0 to turn it off
   node_pool = google_container_node_pool.nodes
   persistent_disk = var.ddns-config-disk
+  service_account_name = var.ddns-service-account-name
+  service_account_json = var.ddns-service-account-json
+  subdomain = var.dns-subdomain
+  zone = "${var.dns-zone}."
+  project_name = var.project_id
 }

@@ -14,6 +14,8 @@ variable "postgres_port" {}
 variable "postgres_disk" {}
 variable "persistent-disk-name" {}
 variable "ddns-config-disk" {}
+variable "ddns-service-account-name" {}
+variable "ddns-service-account-json" {}
 variable "coder_port" {}
 variable "coder_password" {}
 variable "coder_disk" {}
