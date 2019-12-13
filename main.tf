@@ -80,7 +80,6 @@ module "postgres" {
   module_count = local.node_count
   node_pool = google_container_node_pool.nodes
   persistent_disk = var.postgres_disk
-  user = var.postgres_user
   password = var.postgres_password
 }
 

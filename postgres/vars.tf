@@ -2,7 +2,6 @@
 variable "module_count" {}
 variable "node_pool" {}
 variable "password" {}
-variable "user" {}
 variable "persistent_disk" {}
 
 #internal variables
