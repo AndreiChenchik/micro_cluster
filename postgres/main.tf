@@ -58,13 +58,7 @@ resource "kubernetes_deployment" "main" {
           name = var.name
           image = var.image    
           
-          # all the env settings
-          # user
-          env {
-            name = "POSTGRES_USER"
-            value = var.user
-          }    
-          
+          # all the env settings          
           # passsword
           env {
             name = "POSTGRES_PASSWORD"
