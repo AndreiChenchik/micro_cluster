@@ -6,16 +6,8 @@ variable "user" {}
 variable "persistent_disk" {}
 
 #internal variables
-variable "app_name" {
+variable "name" {
   default="postgres"
-}
-
-variable "container_name" {
-  default="postgres-container"
-}
-
-variable "deployment_name" {
-  default="postgres-deployment"
 }
 
 variable "image" {

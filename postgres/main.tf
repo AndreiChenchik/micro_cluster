@@ -22,7 +22,7 @@ resource "kubernetes_deployment" "main" {
   count = local.onoff_switch
 
   metadata {
-    name = var.deployment_name
+    name = var.name
   }
   
   # wait for gke node pool
@@ -34,7 +34,7 @@ resource "kubernetes_deployment" "main" {
     
     selector {
       match_labels = {
-        app = var.app_name
+        app = var.name
       }
     }
     
@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "main" {
     template {
       metadata {
         labels = {
-          app = var.app_name
+          app = var.name
         }
       }
 
@@ -56,7 +56,7 @@ resource "kubernetes_deployment" "main" {
         }  
         
         container {
-          name = var.container_name
+          name = var.name
           image = var.image    
           
           # all the env settings
@@ -100,7 +100,7 @@ resource "kubernetes_service" "default" {
   count = local.onoff_switch
 
   metadata {
-    name = "${var.app_name}-service"
+    name = var.name
   }
 
   # wait for deployment
@@ -109,7 +109,7 @@ resource "kubernetes_service" "default" {
   spec {
     selector = {
       # choose only our app
-      app = var.app_name
+      app = var.name
     }
     
     port {
