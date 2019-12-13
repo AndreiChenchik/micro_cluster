@@ -80,7 +80,6 @@ module "postgres" {
   module_count = local.node_count
   node_pool = google_container_node_pool.nodes
   persistent_disk = var.postgres_disk
-  external_port = var.postgres_port
   user = var.postgres_user
   password = var.postgres_password
 }
@@ -98,7 +97,7 @@ module "code-server" {
 
 # combine all ports
 locals {
-  external_ports = concat([var.jupyter_port, var.postgres_port, var.coder_port], split(",", var.coder_additional_ports))         
+  external_ports = concat([var.jupyter_port, var.coder_port], split(",", var.coder_additional_ports))         
 }
 
 # expose nodeport to external network

@@ -5,7 +5,6 @@
 #  module_count = 1 # 0 to turn it off
 #  node_pool = google_container_node_pool.nodes
 #  persistent_disk = "db-storage"
-#  external_port = 30004
 #  user = "postgres"
 #  password = "mysecretpassword"
 #}
@@ -94,7 +93,7 @@ resource "kubernetes_deployment" "main" {
   }
 }
 
-# add nodeport to drive external traffic to pod
+# add in-cluster connectivity to drive traffic to the pod
 resource "kubernetes_service" "node_port" {
   # create resource only if there it's required
   count = local.onoff_switch
@@ -116,9 +115,7 @@ resource "kubernetes_service" "node_port" {
       # expose main port of our container
       name = "main-port"
       port = var.main_port
-      node_port = var.external_port
+      target_port = var.main_port
     }    
-  
-    type = "NodePort"
   }
 }
