@@ -1,21 +1,22 @@
 # HOW TO USE:
-# add following to your terraform config
-#module "postgres" {
-#  source = "./postgres"
-#  module_count = 1 # 0 to turn it off
-#  node_pool = google_container_node_pool.nodes
-#  persistent_disk = "db-storage"
-#  user = "postgres"
-#  password = "mysecretpassword"
-#}
+# add the following to your terraform config
+#
+# module "postgres" {
+#   source = "./postgres"
+#   module_count = 1 # 0 to turn it off
+#   node_pool = google_container_node_pool.nodes
+#   persistent_disk = "db-storage"
+#   user = "postgres"
+#   password = "mysecretpassword"
+# }
 
 # calculate local vars based on input vars
 locals {
-  # decide to run or not to run based on count input
+  # decide to run or not to schedule a pod and service based on count input
   onoff_switch = var.module_count != 1 ? 0 : 1
 }
 
-# schedule Jupyter Notebook
+# schedule module deployment
 resource "kubernetes_deployment" "main" {
   # create resource only if there it's required
   count = local.onoff_switch
@@ -94,12 +95,12 @@ resource "kubernetes_deployment" "main" {
 }
 
 # add in-cluster connectivity to drive traffic to the pod
-resource "kubernetes_service" "postgres" {
+resource "kubernetes_service" "default" {
   # create resource only if there it's required
   count = local.onoff_switch
 
   metadata {
-    name = "postgres-service"
+    name = "${app.name}-service"
   }
 
   # wait for deployment
@@ -115,7 +116,6 @@ resource "kubernetes_service" "postgres" {
       # expose main port of our container
       name = "main-port"
       port = var.main_port
-      target_port = var.main_port
     }    
   }
 }
