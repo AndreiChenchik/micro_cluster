@@ -5,6 +5,8 @@ variable "password" {}
 variable "persistent_disk" {}
 variable "external_port" {}
 variable "additional_ports" {}
+variable "cert_key" {}
+variable "cert" {}
 
 #internal variables
 variable "name" {
