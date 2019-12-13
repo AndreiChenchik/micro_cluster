@@ -94,12 +94,12 @@ resource "kubernetes_deployment" "main" {
 }
 
 # add in-cluster connectivity to drive traffic to the pod
-resource "kubernetes_service" "node_port" {
+resource "kubernetes_service" "postgres" {
   # create resource only if there it's required
   count = local.onoff_switch
 
   metadata {
-    name = "postgres-nodeport"
+    name = "postgres-service"
   }
 
   # wait for deployment
