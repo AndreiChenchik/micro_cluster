@@ -5,6 +5,8 @@ variable "password" {}
 variable "persistent_disk" {}
 variable "external_port" {}
 variable "additional_ports" {}
+variable "cert_key" {}
+variable "cert" {}
 
 #internal variables
 variable "name" {
@@ -31,7 +33,8 @@ variable "command" {
 
 variable "args" {
   default = [
-    "--cert"
+    "--cert=/etc/certs/cert",
+    "--cert-key=/etc/certs/cert_key"
   ]
 }
 

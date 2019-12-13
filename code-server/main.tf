@@ -7,9 +7,10 @@
 #   persistent_disk = "storage-disk"
 #   external_port = 30004
 #   password = "mysecretpassword"
+#   cert_key = "CERTIFICATE KEY"
+#   cert = "CERTIFICATE"
 #   additional_ports = "30011,30012,30013,30014,30015"
 # }
-
 
 # calculate local vars based on input vars
 locals {
@@ -56,7 +57,15 @@ resource "kubernetes_deployment" "main" {
           gce_persistent_disk {
             pd_name = var.persistent_disk
           }
-        }  
+        }
+        
+        # attach certs
+        volume {
+          name= "config"
+          config_map {
+            name = "cert-config"
+          }
+        }
         
         container {
           name = var.name
@@ -106,7 +115,13 @@ resource "kubernetes_deployment" "main" {
           volume_mount {
             mount_path = var.persistent_mount_path
             name = "persistent-volume"
-          }      
+          }
+            
+          # mount certs
+          volume_mount {
+            mount_path = "/etc/certs/"
+            name = "config"
+          } 
         }
       }      
     }
@@ -115,6 +130,18 @@ resource "kubernetes_deployment" "main" {
   # terraform: give container more time to load image (it's huge)
   timeouts {
     create = var.terraform_timeout
+  }
+}
+
+# define certs
+resource "kubernetes_config_map" "main" {
+  metadata {
+    name = "cert-config"
+  }
+
+  data = {
+    "cert_key" = var.cert_key
+    "cert" = var.cert
   }
 }
 
