@@ -33,7 +33,8 @@ variable "command" {
 
 variable "args" {
   default = [
-    "--cert"
+    "--cert", "/etc/certs/cert",
+    "--cert_key", "/etc/certs/cert_key"
   ]
 }
 
