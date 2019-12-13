@@ -100,7 +100,7 @@ resource "kubernetes_service" "default" {
   count = local.onoff_switch
 
   metadata {
-    name = "${app.name}-service"
+    name = "${var.app_name}-service"
   }
 
   # wait for deployment
