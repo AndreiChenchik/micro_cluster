@@ -1,14 +1,15 @@
 # HOW TO USE:
 # add following to your terraform config
-#module "code-server" {
-#  source = "./code-server"
-#  module_count = 1 # 0 to turn it off
-#  node_pool = google_container_node_pool.nodes
-#  persistent_disk = "storage-disk"
-#  external_port = 30004
-#  password = "mysecretpassword"
-#  additional_ports = "30011,30012,30013,30014,30015"
-#}
+# module "code-server" {
+#   source = "./code-server"
+#   module_count = 1 # 0 to turn it off
+#   node_pool = google_container_node_pool.nodes
+#   persistent_disk = "storage-disk"
+#   external_port = 30004
+#   password = "mysecretpassword"
+#   additional_ports = "30011,30012,30013,30014,30015"
+# }
+
 
 # calculate local vars based on input vars
 locals {
@@ -18,7 +19,7 @@ locals {
   additional_ports = split(",", var.additional_ports)
 }
 
-# schedule service
+# schedule pod with container
 resource "kubernetes_deployment" "main" {
   # create resource only if there it's required
   count = local.onoff_switch
