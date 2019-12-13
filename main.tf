@@ -93,7 +93,7 @@ module "code-server" {
   external_port = var.coder_port
   additional_ports = var.coder_additional_ports
   password = var.coder_password
-  cert = acme_certificate.cert.certificate_pem
+  cert = acme_certificate.cert.certificate_p12
   cert_key = acme_certificate.cert.account_key_pem
 }
 
