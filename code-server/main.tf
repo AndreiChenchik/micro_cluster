@@ -24,7 +24,7 @@ resource "kubernetes_deployment" "main" {
   count = local.onoff_switch
 
   metadata {
-    name = var.deployment_name
+    name = var.name
   }
   
   # wait for gke node pool
@@ -36,7 +36,7 @@ resource "kubernetes_deployment" "main" {
     
     selector {
       match_labels = {
-        app = var.app_name
+        app = var.name
       }
     }
     
@@ -44,7 +44,7 @@ resource "kubernetes_deployment" "main" {
     template {
       metadata {
         labels = {
-          app = var.app_name
+          app = var.name
         }
       }
 
@@ -58,7 +58,7 @@ resource "kubernetes_deployment" "main" {
         }  
         
         container {
-          name = var.container_name
+          name = var.name
           command = var.command
           args = var.args
           image = var.image    
@@ -118,12 +118,12 @@ resource "kubernetes_deployment" "main" {
 }
 
 # add nodeport to drive external traffic to pod
-resource "kubernetes_service" "node_port" {
+resource "kubernetes_service" "main" {
   # create resource only if there it's required
   count = local.onoff_switch
 
   metadata {
-    name = "code-server-nodeport"
+    name = var.name
   }
 
   # wait for deployment
@@ -132,7 +132,7 @@ resource "kubernetes_service" "node_port" {
   spec {
     selector = {
       # choose only our app
-      app = var.app_name
+      app = var.name
     }
     
     port {

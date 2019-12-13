@@ -7,16 +7,8 @@ variable "external_port" {}
 variable "additional_ports" {}
 
 #internal variables
-variable "app_name" {
+variable "name" {
   default="code-server"
-}
-
-variable "container_name" {
-  default="code-server-container"
-}
-
-variable "deployment_name" {
-  default="code-server-deployment"
 }
 
 variable "image" {
