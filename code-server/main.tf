@@ -151,7 +151,7 @@ resource "kubernetes_service" "main" {
   count = local.onoff_switch
 
   metadata {
-    name = "test-name"
+    name = var.name
   }
 
   # wait for deployment
