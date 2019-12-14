@@ -10,7 +10,7 @@ variable "cert" {}
 
 #internal variables
 variable "name" {
-  default="code-server"
+  default="coder"
 }
 
 variable "image" {
