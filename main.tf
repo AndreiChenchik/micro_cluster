@@ -72,6 +72,8 @@ module "jupyter" {
   external_port = var.jupyter_port
   public_url = "https://${var.dns-subdomain}.${var.dns-zone}:${var.jupyter_port}"
   password = var.jupyter_password
+  cert = acme_certificate.cert.certificate_pem
+  cert_key = acme_certificate.cert.private_key_pem
 }
 
 # deploy postgres
