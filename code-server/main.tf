@@ -63,7 +63,7 @@ resource "kubernetes_deployment" "main" {
         volume {
           name= "config"
           config_map {
-            name = "cert-config"
+            name = "tls-certs"
           }
         }
         
@@ -136,7 +136,7 @@ resource "kubernetes_deployment" "main" {
 # define certs
 resource "kubernetes_config_map" "main" {
   metadata {
-    name = "cert-config"
+    name = "tls-certs"
   }
 
   data = {
