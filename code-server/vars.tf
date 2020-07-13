@@ -14,7 +14,7 @@ variable "name" {
 }
 
 variable "image" {
-  default="codercom/code-server:2.1697-vsc1.39.2"
+  default="codercom/code-server:3.4.1"
 }
   
 variable "persistent_mount_path" {
