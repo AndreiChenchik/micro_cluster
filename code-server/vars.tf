@@ -35,7 +35,7 @@ variable "args" {
   default = [
     "--cert=/etc/certs/cert",
     "--cert-key=/etc/certs/cert_key",
-    "--bind-addr=0.0.0.0"
+    "--bind-addr=0.0.0.0:8080"
   ]
 }
 
