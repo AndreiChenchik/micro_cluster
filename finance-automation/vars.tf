@@ -10,7 +10,7 @@ variable "name" {
 }
 
 variable "image" {
-  default="gumlooter/finance:latest"
+  default="gumlooter/finance:version-0.0.1"
 }
 
 variable "main_port" {
