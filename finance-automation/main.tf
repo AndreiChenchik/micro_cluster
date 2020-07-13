@@ -10,7 +10,7 @@ resource "kubernetes_secret" "docker_pull_secret" {
   }
 
   data = {
-    ".dockerconfigjson" = var.dockerconfigjson
+    ".dockerconfigjson" = "${var.dockerconfigjson}"
   }
 
   type = "kubernetes.io/dockerconfigjson"
