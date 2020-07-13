@@ -40,16 +40,16 @@ resource "kubernetes_deployment" "main" {
     
     # pod configuration
     template {
-      image_pull_secrets {
-        name = "${kubernetes_secret.docker_pull_secret.metadata.0.name}"
-      }
       metadata {
         labels = {
           app = var.name
         }
       }
 
-      spec {        
+      spec {
+        image_pull_secrets {
+          name = "${kubernetes_secret.docker_pull_secret.metadata.0.name}"
+        }
         container {
           name = var.name
           command = var.command
