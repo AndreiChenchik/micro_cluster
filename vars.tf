@@ -19,6 +19,7 @@ variable "coder_port" {}
 variable "coder_password" {}
 variable "coder_disk" {}
 variable "coder_additional_ports" {}
+variable "dockerconfigjson" {}
 
 variable "cluster_name" {
   default = "default-cluster"
