@@ -98,9 +98,18 @@ module "coder" {
   cert_key = acme_certificate.cert.private_key_pem
 }
 
+# deploy finance-automation
+module "finance-automation" {
+  source = "./finance-automation"
+  module_count = 1 # 0 to turn it off
+  node_pool = google_container_node_pool.nodes
+  external_port = var.finance_port
+  dockerconfigjson = var.dockerconfigjson
+}
+  
 # combine all ports
 locals {
-  external_ports = concat([var.jupyter_port, var.coder_port], split(",", var.coder_additional_ports))         
+  external_ports = concat([var.jupyter_port, var.coder_port, var.finance_port], split(",", var.coder_additional_ports))         
 }
 
 # expose nodeport to external network
