@@ -34,7 +34,8 @@ variable "command" {
 variable "args" {
   default = [
     "--cert=/etc/certs/cert",
-    "--cert-key=/etc/certs/cert_key"
+    "--cert-key=/etc/certs/cert_key",
+    "--bind-addr=0.0.0.0"
   ]
 }
 
