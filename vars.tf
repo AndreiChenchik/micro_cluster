@@ -21,6 +21,9 @@ variable "coder_disk" {}
 variable "coder_additional_ports" {}
 variable "dockerconfigjson" {}
 variable "finance_port" {}
+variable "telegram_token" {}
+variable "notion_token" {}
+variable "credit_limit" {}
 
 variable "cluster_name" {
   default = "default-cluster"
