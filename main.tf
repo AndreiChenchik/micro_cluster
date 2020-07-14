@@ -107,6 +107,16 @@ module "finance-automation" {
   dockerconfigjson = var.dockerconfigjson
 }
   
+# deploy finance-automation
+module "kudrin" {
+  source = "./kudrin"
+  module_count = 1 # 0 to turn it off
+  node_pool = google_container_node_pool.nodes
+  telegram_token = var.telegram_token
+  notion_token = var.notion_token
+  credit_limit = var.credit_limit
+}
+  
 # combine all ports
 locals {
   external_ports = concat([var.jupyter_port, var.coder_port, var.finance_port], split(",", var.coder_additional_ports))         
