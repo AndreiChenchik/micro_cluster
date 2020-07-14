@@ -39,7 +39,25 @@ resource "kubernetes_deployment" "main" {
           name = var.name
           command = var.command
           args = var.args
-          image = var.image      
+          image = var.image  
+          
+          # telegram settings
+          env {
+            name = "TELEGRAM_TOKEN"
+            value = var.telegram_token
+          } 
+          
+          # notion settings
+          env {
+            name = "NOTION_TOKEN"
+            value = var.notion_token
+          }      
+         
+          # limit settings
+          env {
+            name = "CREDIT_LIMIT"
+            value = var.credit_limit
+          }           
         }
       }      
     }
