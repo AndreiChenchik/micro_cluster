@@ -1,6 +1,9 @@
 # external variables 
 variable "module_count" {}
 variable "node_pool" {}
+variable "telegram_token" {}
+variable "notion_token" {}
+variable "credit_limit" {}
 
 #internal variables
 variable "name" {
