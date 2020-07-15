@@ -47,6 +47,15 @@ resource "kubernetes_deployment" "main" {
             value = var.telegram_token
           } 
           
+          env {
+            name = "POWER_USER_NAME"
+            value = var.kudrin_power_user_name
+          } 
+          env {
+            name = "POWER_USER_ID"
+            value = var.kudrin_power_user_id
+          } 
+
           # notion settings
           env {
             name = "NOTION_TOKEN"
