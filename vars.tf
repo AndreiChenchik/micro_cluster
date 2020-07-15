@@ -24,6 +24,8 @@ variable "finance_port" {}
 variable "telegram_token" {}
 variable "notion_token" {}
 variable "credit_limit" {}
+variable "kudrin_power_user_id" {}
+variable "kudrin_power_user_name" {}
 
 variable "cluster_name" {
   default = "default-cluster"
