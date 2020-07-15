@@ -115,6 +115,8 @@ module "kudrin" {
   telegram_token = var.telegram_token
   notion_token = var.notion_token
   credit_limit = var.credit_limit
+  kudrin_power_user_name = var.kudrin_power_user_name
+  kudrin_power_user_id = var.kudrin_power_user_id
 }
   
 # combine all ports
