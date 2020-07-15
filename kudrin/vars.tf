@@ -4,6 +4,8 @@ variable "node_pool" {}
 variable "telegram_token" {}
 variable "notion_token" {}
 variable "credit_limit" {}
+variable "kudrin_power_user_id" {}
+variable "kudrin_power_user_name" {}
 
 #internal variables
 variable "name" {
