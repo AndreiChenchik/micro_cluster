@@ -143,9 +143,15 @@ resource "kubernetes_deployment" "main" {
                         config_map_ref {
                             name = "mssql.env"
                         }
+                    }
+                    
+                    env_from {
                         config_map_ref {
                             name = "uid.env"
                         }
+                    }
+
+                    env_from {
                         config_map_ref {
                             name = "mssql.override.env"
                         }
