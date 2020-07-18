@@ -11,15 +11,15 @@ resource "kubernetes_config_map" "global_override_env" {
     }
 
     data = {
-        globalSettings__baseServiceUri__vault               = "https://{$var.bitwarden-host}:{$var.bitwarden-port}"
-        globalSettings__baseServiceUri__api                 = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/api"
-        globalSettings__baseServiceUri__identity            = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/identity"
-        globalSettings__baseServiceUri__admin               = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/admin"
-        globalSettings__baseServiceUri__notifications       = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/notifications"
-        globalSettings__sqlServer__connectionString         = "Data Source=tcp:mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password={$var.bitwarden-mssql_password};MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
+        globalSettings__baseServiceUri__vault               = "https://${var.bitwarden-host}:${var.bitwarden-port}"
+        globalSettings__baseServiceUri__api                 = "https://${var.bitwarden-host}:${var.bitwarden-port}/api"
+        globalSettings__baseServiceUri__identity            = "https://${var.bitwarden-host}:${var.bitwarden-port}/identity"
+        globalSettings__baseServiceUri__admin               = "https://${var.bitwarden-host}:${var.bitwarden-port}/admin"
+        globalSettings__baseServiceUri__notifications       = "https://${var.bitwarden-host}:${var.bitwarden-port}/notifications"
+        globalSettings__sqlServer__connectionString         = "Data Source=tcp:mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password=${var.bitwarden-mssql_password};MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
         globalSettings__identityServer__certificatePassword = var.bitwarden-identity_cert_password
         globalSettings__attachment__baseDirectory           = "/etc/bitwarden/core/attachments"
-        globalSettings__attachment__baseUrl                 = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/attachments"
+        globalSettings__attachment__baseUrl                 = "https://${var.bitwarden-host}:${var.bitwarden-port}/attachments"
         globalSettings__dataProtection__directory           = "/etc/bitwarden/core/aspnet-dataprotection"
         globalSettings__logDirectory                        = "/etc/bitwarden/logs"
         globalSettings__licenseDirectory                    = "/etc/bitwarden/core/licenses"
@@ -692,7 +692,7 @@ resource "kubernetes_deployment" "nginx" {
 
                     # mount certs
                     volume_mount {
-                        mount_path = "/etc/ssl/{$var.bitwarden-host}"
+                        mount_path = "/etc/ssl/${var.bitwarden-host}"
                         name = "certs"
                     }
                 }
@@ -732,7 +732,7 @@ resource "kubernetes_deployment" "admin" {
         template {
             metadata {
                 labels = {
-                    app = var.name
+                    app = "bitwarden-admin"
                 }
             }
 
