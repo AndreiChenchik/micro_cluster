@@ -11,25 +11,25 @@ resource "kubernetes_config_map" "global_override_env" {
     }
 
     data = {
-        globalSettings__baseServiceUri__vault               = "https://bitwarden.example.com"
-        globalSettings__baseServiceUri__api                 = "https://bitwarden.example.com/api"
-        globalSettings__baseServiceUri__identity            = "https://bitwarden.example.com/identity"
-        globalSettings__baseServiceUri__admin               = "https://bitwarden.example.com/admin"
-        globalSettings__baseServiceUri__notifications       = "https://bitwarden.example.com/notifications"
-        globalSettings__sqlServer__connectionString         = "Data Source=tcp:mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password=RANDOM_DATABASE_PASSWORD;MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
-        globalSettings__identityServer__certificatePassword = "IDENTITY_CERT_PASSWORD"
+        globalSettings__baseServiceUri__vault               = "https://{$var.bitwarden-host}:{$var.bitwarden-port}"
+        globalSettings__baseServiceUri__api                 = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/api"
+        globalSettings__baseServiceUri__identity            = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/identity"
+        globalSettings__baseServiceUri__admin               = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/admin"
+        globalSettings__baseServiceUri__notifications       = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/notifications"
+        globalSettings__sqlServer__connectionString         = "Data Source=tcp:mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password={$var.bitwarden-mssql_password};MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
+        globalSettings__identityServer__certificatePassword = var.bitwarden-identity_cert_password
         globalSettings__attachment__baseDirectory           = "/etc/bitwarden/core/attachments"
-        globalSettings__attachment__baseUrl                 = "https://bitwarden.example.com/attachments"
+        globalSettings__attachment__baseUrl                 = "https://{$var.bitwarden-host}:{$var.bitwarden-port}/attachments"
         globalSettings__dataProtection__directory           = "/etc/bitwarden/core/aspnet-dataprotection"
         globalSettings__logDirectory                        = "/etc/bitwarden/logs"
         globalSettings__licenseDirectory                    = "/etc/bitwarden/core/licenses"
-        globalSettings__internalIdentityKey                 = "RANDOM_IDENTITY_KEY"
-        globalSettings__duo__aKey                           = "RANDOM_DUO_AKEY"
-        globalSettings__installation__id                    = "00000000-0000-0000-0000-000000000000"
-        globalSettings__installation__key                   = "SECRET_INSTALLATION_KEY"
+        globalSettings__internalIdentityKey                 = var.bitwarden-identity_key
+        globalSettings__duo__aKey                           = var.bitwarden-duo_key
+        globalSettings__installation__id                    = var.bitwarden-installation_id
+        globalSettings__installation__key                   = var.bitwarden-installation_key
         globalSettings__yubico__clientId                    = "REPLACE"
         globalSettings__yubico__key                         = "REPLACE"
-        globalSettings__mail__replyToEmail                  = "no-reply@bitwarden.example.com"
+        globalSettings__mail__replyToEmail                  = var.bitwarden-reply_to
         globalSettings__mail__smtp__host                    = "REPLACE"
         globalSettings__mail__smtp__port                    = "587"
         globalSettings__mail__smtp__ssl                     = "false"
@@ -50,7 +50,7 @@ resource "kubernetes_config_map" "mssql_override_env" {
     data = {
         ACCEPT_EULA = "Y"
         MSSQL_PID   = "Express"
-        SA_PASSWORD = "RANDOM_DATABASE_PASSWORD"
+        SA_PASSWORD = var.bitwarden-mssql_password
     }
 }
 
@@ -98,7 +98,7 @@ resource "kubernetes_config_map" "mssql_env" {
     data = {
         ACCEPT_EULA = "Y"
         MSSQL_PID   = "Express"
-        SA_PASSWORD = "SECRET"
+        SA_PASSWORD = var.bitwarden-mssql_password
     }
 }
 
@@ -109,7 +109,7 @@ resource "kubernetes_deployment" "main" {
     count = local.onoff_switch
 
     metadata {
-        name = "bitwarden"
+        name = var.name
     }
     
     # wait for gke node pool
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "main" {
         
         selector {
             match_labels = {
-                app = "bitwarden"
+                app = var.name
             }
         }
         
@@ -129,11 +129,43 @@ resource "kubernetes_deployment" "main" {
         template {
             metadata {
                 labels = {
-                    app = "bitwarden"
+                    app = var.name
                 }
             }
 
             spec {
+                 # attach certs
+                volume {
+                    name= "certs"
+                    config_map {
+                        name = "tls-certs"
+                    }
+                }
+                
+                # attach config
+                volume {
+                    name= "config"
+                    config_map {
+                        name = "nginx"
+                    }
+                }
+
+                # attach identity
+                volume {
+                    name= "identity"
+                    config_map {
+                        name = "identity"
+                    }
+                }
+
+                # attach identity
+                volume {
+                    name= "app-id"
+                    config_map {
+                        name = "app-id"
+                    }
+                }
+
                 container {
                     name    = "bitwarden-mssql"
                     image   = "bitwarden/mssql:latest"  
@@ -173,6 +205,12 @@ resource "kubernetes_deployment" "main" {
                         config_map_ref {
                             name = "uid.env"
                         }
+                    }
+
+                    # mount app-id
+                    volume_mount {
+                        mount_path = "/etc/bitwarden/web"
+                        name = "app-id"
                     }
                 }
 
@@ -239,6 +277,12 @@ resource "kubernetes_deployment" "main" {
                         config_map_ref {
                             name = "global.override.env"
                         }
+                    }
+
+                    # mount identity
+                    volume_mount {
+                        mount_path = "/etc/bitwarden/identity"
+                        name = "identity"
                     }
                 }
 
@@ -342,6 +386,18 @@ resource "kubernetes_deployment" "main" {
                             name = "uid.env"
                         }
                     }
+                    
+                    # mount config
+                    volume_mount {
+                        mount_path = "/etc/bitwarden/nginx"
+                        name = "config"
+                    }
+
+                    # mount certs
+                    volume_mount {
+                        mount_path = "/etc/ssl/{$var.bitwarden-host}"
+                        name = "certs"
+                    }
                 }
             }      
         }
@@ -350,5 +406,81 @@ resource "kubernetes_deployment" "main" {
     # terraform: give container more time to load image (it's huge)
     timeouts {
         create = var.terraform_timeout
+    }
+}
+
+
+# define certs
+resource "kubernetes_config_map" "tls-certs" {
+    metadata {
+        name = "tls-certs"
+    }
+
+    data = {
+        "private.key"       = var.bitwarden-cert_key
+        "certificate.crt"   = var.bitwarden-cert
+        "ca.crt"            = var.bitwarden-cert_ca
+    }
+}
+
+# define config
+resource "kubernetes_config_map" "nginx" {
+    metadata {
+        name = "nginx"
+    }
+
+    data = {
+        "default.config" = templatefile("${path.module}/nginx.tmpl", { host = var.bitwarden-host, port = var.bitwarden-port })
+    }
+}
+
+# define app-id
+resource "kubernetes_config_map" "app-id" {
+    metadata {
+        name = "app-id"
+    }
+
+    data = {
+        "app-id.json" = templatefile("${path.module}/app-id.tmpl", { host = var.bitwarden-host, port = var.bitwarden-port })
+    }
+}
+
+# define identity
+resource "kubernetes_config_map" "identity" {
+    metadata {
+        name = "identity"
+    }
+    binary_data = {
+        "identity.pfx" = "${filebase64("${path.module}/identity.bin")}"
+    }
+}
+
+
+# add nodeport to drive external traffic to pod
+resource "kubernetes_service" "main" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = var.name
+    }
+
+    # wait for deployment
+    depends_on = [kubernetes_deployment.main]
+    
+    spec {
+        selector = {
+            # choose only our app
+            app = var.name
+        }
+        
+        port {
+            # expose main port of our container
+            name = "main-port"
+            port = 8443
+            node_port = var.bitwarden_port
+        } 
+
+        type = "NodePort"
     }
 }

@@ -121,14 +121,26 @@ module "kudrin" {
 
 # deploy bitwarden password manager
 module "bitwarden" {
-    source                  = "./bitwarden"
-    module_count            = 1 # 0 to turn it off
-    node_pool               = google_container_node_pool.nodes
+    source                              = "./bitwarden"
+    module_count                        = 1 # 0 to turn it off
+    node_pool                           = google_container_node_pool.nodes
+    bitwarden-installation_id           = var.bitwarden-installation_id
+    bitwarden-installation_key          = var.bitwarden-installation_key
+    bitwarden-identity_cert_password    = var.bitwarden-identity_cert_password
+    bitwarden-mssql_password            = var.bitwarden-mssql_password
+    bitwarden-identity_key              = var.bitwarden-identity_key
+    bitwarden-duo_key                   = var.bitwarden-duo_key 
+    bitwarden-reply_to                  = var.email 
+    bitwarden-cert                      = acme_certificate.cert.certificate_pem
+    bitwarden-cert_key                  = acme_certificate.cert.private_key_pem
+    bitwarden-cert_ca                   = acme_certificate.cert.issuer_pem
+    bitwarden-host                      = "${var.dns-subdomain}.${var.dns-zone}"
+    bitwarden-port                      = var.bitwarden-port
 }
 
 # combine all ports
 locals {
-    external_ports = concat([var.jupyter_port,var.coder_port, var.finance_port], split(",", var.coder_additional_ports))         
+    external_ports = concat([var.jupyter_port,var.coder_port, var.finance_port, var.bitwarden-port], split(",", var.coder_additional_ports))         
 }
 
 # expose nodeport to external network

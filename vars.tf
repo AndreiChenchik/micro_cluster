@@ -26,6 +26,13 @@ variable "kudrin-notion_token" {}
 variable "kudrin-credit_limit" {}
 variable "kudrin-power_user_id" {}
 variable "kudrin-power_user_name" {}
+variable "bitwarden-installation_id" {}
+variable "bitwarden-installation_key" {}
+variable "bitwarden-identity_cert_password" {}
+variable "bitwarden-mssql_password" {}
+variable "bitwarden-identity_key" {}
+variable "bitwarden-duo_key" {}
+variable "bitwarden-port" {}
 
 variable "cluster_name" {
     default = "default-cluster"
