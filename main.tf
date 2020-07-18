@@ -107,7 +107,7 @@ module "finance-automation" {
     dockerconfigjson    = var.dockerconfigjson
 }
     
-# deploy finance-automation
+# deploy telegram bot: kudrin
 module "kudrin" {
     source                  = "./kudrin"
     module_count            = 1 # 0 to turn it off
@@ -118,7 +118,14 @@ module "kudrin" {
     kudrin-power_user_name  = var.kudrin-power_user_name
     kudrin-power_user_id    = var.kudrin-power_user_id
 }
-    
+
+# deploy bitwarden password manager
+module "bitwarden" {
+    source                  = "./bitwarden"
+    module_count            = 1 # 0 to turn it off
+    node_pool               = google_container_node_pool.nodes
+}
+
 # combine all ports
 locals {
     external_ports = concat([var.jupyter_port,var.coder_port, var.finance_port], split(",", var.coder_additional_ports))         
