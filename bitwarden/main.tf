@@ -5,7 +5,7 @@ locals {
 }
 
 # prepare env variables
-resource "kubernetes_config_map" "global.override.env" {
+resource "kubernetes_config_map" "global_override_env" {
     metadata {
         name = "global.override.env"
     }
@@ -42,7 +42,7 @@ resource "kubernetes_config_map" "global.override.env" {
 }
 
 
-resource "kubernetes_config_map" "mssql.override.env" {
+resource "kubernetes_config_map" "mssql_override_env" {
     metadata {
         name = "mssql.override.env"
     }
@@ -55,7 +55,7 @@ resource "kubernetes_config_map" "mssql.override.env" {
 }
 
 
-resource "kubernetes_config_map" "uid.env" {
+resource "kubernetes_config_map" "uid_env" {
     metadata {
         name = "uid.env"
     }
@@ -66,7 +66,7 @@ resource "kubernetes_config_map" "uid.env" {
 }
 
 
-resource "kubernetes_config_map" "global.env" {
+resource "kubernetes_config_map" "global_env" {
     metadata {
         name = "global.env"
     }
@@ -90,7 +90,7 @@ resource "kubernetes_config_map" "global.env" {
 }
 
 
-resource "kubernetes_config_map" "mssql.env" {
+resource "kubernetes_config_map" "mssql_env" {
     metadata {
         name = "mssql.env"
     }
