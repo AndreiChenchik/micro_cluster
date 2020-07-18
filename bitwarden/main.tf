@@ -110,7 +110,7 @@ resource "kubernetes_deployment" "mssql" {
     count = local.onoff_switch
 
     metadata {
-        name = var.name
+        name = "bitwarden-mssql"
     }
     
     # wait for gke node pool
