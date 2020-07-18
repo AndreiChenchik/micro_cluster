@@ -792,7 +792,7 @@ resource "kubernetes_config_map" "nginx" {
     }
 
     data = {
-        "default.config" = templatefile("${path.module}/nginx.tmpl", { host = var.bitwarden-host, port = var.bitwarden-port })
+        "default.conf" = templatefile("${path.module}/nginx.tmpl", { host = var.bitwarden-host, port = var.bitwarden-port })
     }
 }
 
