@@ -9,25 +9,25 @@ variable "kudrin-power_user_name" {}
 
 #internal variables
 variable "name" {
-  default="kudrin"
+    default = "kudrin"
 }
 
 variable "image" {
-  default="gumlooter/kudrin:latest"
+    default = "gumlooter/kudrin:latest"
 }
 
 variable "command" {
-  default = [
-    "python"
-  ]
+    default = [
+        "python"
+    ]
 }
 
 variable "args" {
-  default = [
-    "main.py"
-  ]
+    default = [
+        "main.py"
+    ]
 }
 
 variable "terraform_timeout" {
-  default = "10m"
+    default = "10m"
 }

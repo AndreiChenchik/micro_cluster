@@ -52,10 +52,10 @@ resource "kubernetes_deployment" "main" {
 
             spec {
                 container {
-                    name = var.name
+                    name    = var.name
                     command = var.command
-                    args = var.args
-                    image = var.image  
+                    args    = var.args
+                    image   = var.image  
                     
                     # envs
                     env_from {

@@ -28,18 +28,18 @@ variable "kudrin-power_user_id" {}
 variable "kudrin-power_user_name" {}
 
 variable "cluster_name" {
-  default = "default-cluster"
+    default = "default-cluster"
 }
 
 variable "pool_name" {
-  default = "default-pool"
+    default = "default-pool"
 }
 
 variable "region" {
-  default = "europe-north1"
+    default = "europe-north1"
 }
 
 variable "zone" {
-  default = "europe-north1-b"
+    default = "europe-north1-b"
 }
 
