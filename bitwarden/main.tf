@@ -104,7 +104,7 @@ resource "kubernetes_config_map" "mssql_env" {
 
 
 # schedule pod with container
-resource "kubernetes_deployment" "main" {
+resource "kubernetes_deployment" "mssql" {
     # create resource only if there it's required
     count = local.onoff_switch
 
@@ -121,7 +121,7 @@ resource "kubernetes_deployment" "main" {
         
         selector {
             match_labels = {
-                app = var.name
+                app = "bitwarden-mssql"
             }
         }
         
@@ -129,43 +129,11 @@ resource "kubernetes_deployment" "main" {
         template {
             metadata {
                 labels = {
-                    app = var.name
+                    app = "bitwarden-mssql"
                 }
             }
 
             spec {
-                 # attach certs
-                volume {
-                    name= "certs"
-                    config_map {
-                        name = "tls-certs"
-                    }
-                }
-                
-                # attach config
-                volume {
-                    name= "config"
-                    config_map {
-                        name = "nginx"
-                    }
-                }
-
-                # attach identity
-                volume {
-                    name= "identity"
-                    config_map {
-                        name = "identity"
-                    }
-                }
-
-                # attach identity
-                volume {
-                    name= "app-id"
-                    config_map {
-                        name = "app-id"
-                    }
-                }
-
                 container {
                     name    = "bitwarden-mssql"
                     image   = "bitwarden/mssql:latest"  
@@ -189,6 +157,55 @@ resource "kubernetes_deployment" "main" {
                         }
                     }          
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
+
+# schedule pod with container
+resource "kubernetes_deployment" "web" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-web"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-web"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-web"
+                }
+            }
+
+            spec {
+                # attach identity
+                volume {
+                    name= "app-id"
+                    config_map {
+                        name = "app-id"
+                    }
+                }
+
 
                 container {
                     name    = "bitwarden-web"
@@ -213,7 +230,47 @@ resource "kubernetes_deployment" "main" {
                         name = "app-id"
                     }
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
 
+# schedule pod with container
+resource "kubernetes_deployment" "attachments" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-attachments"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-attachments"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-attachments"
+                }
+            }
+
+            spec {
                 container {
                     name    = "bitwarden-attachments"
                     image   = "bitwarden/attachments:latest"  
@@ -231,7 +288,47 @@ resource "kubernetes_deployment" "main" {
                         }
                     }
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
 
+# schedule pod with container
+resource "kubernetes_deployment" "api" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-api"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-api"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-api"
+                }
+            }
+
+            spec {
                 container {
                     name    = "bitwarden-api"
                     image   = "bitwarden/api:latest"  
@@ -253,6 +350,54 @@ resource "kubernetes_deployment" "main" {
                         config_map_ref {
                             name = "global.override.env"
                         }
+                    }
+                }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
+
+# schedule pod with container
+resource "kubernetes_deployment" "identity" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-identity"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-identity"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-identity"
+                }
+            }
+
+            spec {
+                # attach identity
+                volume {
+                    name= "identity"
+                    config_map {
+                        name = "identity"
                     }
                 }
 
@@ -285,31 +430,47 @@ resource "kubernetes_deployment" "main" {
                         name = "identity"
                     }
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
 
-                container {
-                    name    = "bitwarden-admin"
-                    image   = "bitwarden/admin:latest"  
-                    
-                    # envs
-                    env_from {
-                        config_map_ref {
-                            name = "global.env"
-                        }
-                    }
-                    
-                    env_from {
-                        config_map_ref {
-                            name = "uid.env"
-                        }
-                    }
+# schedule pod with container
+resource "kubernetes_deployment" "icons" {
+    # create resource only if there it's required
+    count = local.onoff_switch
 
-                    env_from {
-                        config_map_ref {
-                            name = "global.override.env"
-                        }
-                    }
+    metadata {
+        name = "bitwarden-icons"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-icons"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-icons"
                 }
+            }
 
+            spec {
                 container {
                     name    = "bitwarden-icons"
                     image   = "bitwarden/icons:latest"  
@@ -327,7 +488,47 @@ resource "kubernetes_deployment" "main" {
                         }
                     }
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
 
+# schedule pod with container
+resource "kubernetes_deployment" "notifications" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-notifications"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-notifications"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-notifications"
+                }
+            }
+
+            spec {
                 container {
                     name    = "bitwarden-notifications"
                     image   = "bitwarden/notifications:latest"  
@@ -351,7 +552,47 @@ resource "kubernetes_deployment" "main" {
                         }
                     }
                 }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
 
+# schedule pod with container
+resource "kubernetes_deployment" "events" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-events"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-events"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-events"
+                }
+            }
+
+            spec {
                 container {
                     name    = "bitwarden-events"
                     image   = "bitwarden/events:latest"  
@@ -373,6 +614,62 @@ resource "kubernetes_deployment" "main" {
                         config_map_ref {
                             name = "global.override.env"
                         }
+                    }
+                }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
+
+# schedule pod with container
+resource "kubernetes_deployment" "nginx" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-nginx"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-nginx"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = "bitwarden-nginx"
+                }
+            }
+
+            spec {
+                 # attach certs
+                volume {
+                    name= "certs"
+                    config_map {
+                        name = "tls-certs"
+                    }
+                }
+                
+                # attach config
+                volume {
+                    name= "config"
+                    config_map {
+                        name = "nginx"
                     }
                 }
 
@@ -397,6 +694,70 @@ resource "kubernetes_deployment" "main" {
                     volume_mount {
                         mount_path = "/etc/ssl/{$var.bitwarden-host}"
                         name = "certs"
+                    }
+                }
+            }      
+        }
+    }
+    
+    # terraform: give container more time to load image (it's huge)
+    timeouts {
+        create = var.terraform_timeout
+    }
+}
+
+# schedule pod with container
+resource "kubernetes_deployment" "admin" {
+    # create resource only if there it's required
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-admin"
+    }
+    
+    # wait for gke node pool
+    depends_on = [var.node_pool]
+
+    spec {
+        # we need only one replica of the service
+        replicas = 1
+        
+        selector {
+            match_labels = {
+                app = "bitwarden-admin"
+            }
+        }
+        
+        # pod configuration
+        template {
+            metadata {
+                labels = {
+                    app = var.name
+                }
+            }
+
+            spec {
+                container {
+                    name    = "bitwarden-admin"
+                    image   = "bitwarden/admin:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
                     }
                 }
             }      
@@ -462,16 +823,16 @@ resource "kubernetes_service" "main" {
     count = local.onoff_switch
 
     metadata {
-        name = var.name
+        name = "bitwarden-nginx"
     }
 
     # wait for deployment
-    depends_on = [kubernetes_deployment.main]
+    depends_on = [kubernetes_deployment.nginx]
     
     spec {
         selector = {
             # choose only our app
-            app = var.name
+            app = "bitwarden-nginx"
         }
         
         port {
