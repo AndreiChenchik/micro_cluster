@@ -661,9 +661,9 @@ resource "kubernetes_deployment" "nginx" {
                  # attach certs
                 volume {
                     name= "certs"
-                    
+
                     config_map {
-                        default_mode = 0777
+                        default_mode = "0777"
                         name = "tls-certs"
                     }
                 }
@@ -673,7 +673,7 @@ resource "kubernetes_deployment" "nginx" {
                     name= "config"
                     
                     config_map {
-                        default_mode = 0777
+                        default_mode = "0777"
                         name = "nginx"
                     }
                 }
