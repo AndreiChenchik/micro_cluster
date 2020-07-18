@@ -174,7 +174,174 @@ resource "kubernetes_deployment" "main" {
                             name = "uid.env"
                         }
                     }
-          
+                }
+
+                container {
+                    name    = "bitwarden-attachments"
+                    image   = "bitwarden/attachments:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-api"
+                    image   = "bitwarden/api:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-identity"
+                    image   = "bitwarden/identity:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-admin"
+                    image   = "bitwarden/admin:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-icons"
+                    image   = "bitwarden/icons:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-notifications"
+                    image   = "bitwarden/notifications:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-events"
+                    image   = "bitwarden/events:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+
+                    env_from {
+                        config_map_ref {
+                            name = "global.override.env"
+                        }
+                    }
+                }
+
+                container {
+                    name    = "bitwarden-nginx"
+                    image   = "bitwarden/nginx:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
                 }
             }      
         }
