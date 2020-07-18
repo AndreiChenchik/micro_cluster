@@ -478,7 +478,7 @@ resource "kubernetes_service" "main" {
             # expose main port of our container
             name = "main-port"
             port = 8443
-            node_port = var.bitwarden_port
+            node_port = var.bitwarden-port
         } 
 
         type = "NodePort"
