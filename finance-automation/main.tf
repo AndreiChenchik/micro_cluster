@@ -48,7 +48,7 @@ resource "kubernetes_deployment" "main" {
 
       spec {
         image_pull_secrets {
-          name = "${kubernetes_secret.docker_pull_secret.metadata.0.name}"
+          name = kubernetes_secret.docker_pull_secret.metadata.0.name
         }
         container {
           name = var.name
