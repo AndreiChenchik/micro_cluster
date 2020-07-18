@@ -112,11 +112,11 @@ module "kudrin" {
   source = "./kudrin"
   module_count = 1 # 0 to turn it off
   node_pool = google_container_node_pool.nodes
-  telegram_token = var.telegram_token
-  notion_token = var.notion_token
-  credit_limit = var.credit_limit
-  kudrin_power_user_name = var.kudrin_power_user_name
-  kudrin_power_user_id = var.kudrin_power_user_id
+  kudrin-telegram_token = var.kudrin-telegram_token
+  kudrin-notion_token = var.kudrin-notion_token
+  kudrin-credit_limit = var.kudrin-credit_limit
+  kudrin-power_user_name = var.kudrin-power_user_name
+  kudrin-power_user_id = var.kudrin-power_user_id
 }
   
 # combine all ports
