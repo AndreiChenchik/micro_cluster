@@ -7,4 +7,7 @@ variable "name" {
     default = "bitwarden"
 }
 
+variable "terraform_timeout" {
+    default = "10m"
+}
 
