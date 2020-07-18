@@ -144,7 +144,7 @@ resource "kubernetes_deployment" "main" {
                             name = "mssql.env"
                         }
                     }
-                    
+
                     env_from {
                         config_map_ref {
                             name = "uid.env"
@@ -156,6 +156,25 @@ resource "kubernetes_deployment" "main" {
                             name = "mssql.override.env"
                         }
                     }          
+                }
+
+                container {
+                    name    = "bitwarden-web"
+                    image   = "bitwarden/web:latest"  
+                    
+                    # envs
+                    env_from {
+                        config_map_ref {
+                            name = "global.env"
+                        }
+                    }
+                    
+                    env_from {
+                        config_map_ref {
+                            name = "uid.env"
+                        }
+                    }
+          
                 }
             }      
         }
