@@ -21,11 +21,11 @@ variable "coder_disk" {}
 variable "coder_additional_ports" {}
 variable "dockerconfigjson" {}
 variable "finance_port" {}
-variable "telegram_token" {}
-variable "notion_token" {}
-variable "credit_limit" {}
-variable "kudrin_power_user_id" {}
-variable "kudrin_power_user_name" {}
+variable "kudrin-telegram_token" {}
+variable "kudrin-notion_token" {}
+variable "kudrin-credit_limit" {}
+variable "kudrin-power_user_id" {}
+variable "kudrin-power_user_name" {}
 
 variable "cluster_name" {
   default = "default-cluster"
