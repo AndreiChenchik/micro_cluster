@@ -61,7 +61,8 @@ resource "kubernetes_config_map" "uid_env" {
     }
 
     data = {
-
+        LOCAL_UID   = 0
+        LOCAL_GID   = 0
     }
 }
 
