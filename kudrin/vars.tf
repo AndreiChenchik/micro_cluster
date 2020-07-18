@@ -13,7 +13,7 @@ variable "name" {
 }
 
 variable "image" {
-  default="gumlooter/kudrin:version-0.0.6"
+  default="gumlooter/kudrin:latest"
 }
 
 variable "command" {
