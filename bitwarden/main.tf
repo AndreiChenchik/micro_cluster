@@ -637,7 +637,7 @@ resource "kubernetes_deployment" "nginx" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool, , kubernetes_service.web, , kubernetes_deployment.api, , kubernetes_deployment.identity, , kubernetes_deployment.admin]
+    depends_on = [var.node_pool, , kubernetes_service.web, kubernetes_deployment.api, kubernetes_deployment.identity, kubernetes_deployment.admin]
 
     spec {
         # we need only one replica of the service
