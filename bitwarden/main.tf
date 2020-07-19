@@ -660,21 +660,21 @@ resource "kubernetes_deployment" "nginx" {
             spec {
                  # attach certs
                 volume {
-                    name= "certs"
+                    name= "birwarden-nginx_certs"
 
                     config_map {
                         default_mode = "0777"
-                        name = "tls-certs"
+                        name = "birwarden-nginx_certs"
                     }
                 }
                 
                 # attach config
                 volume {
-                    name= "config"
+                    name= "bitwarden-nginx_config"
                     
                     config_map {
                         default_mode = "0777"
-                        name = "nginx"
+                        name = "bitwarden-nginx_config"
                     }
                 }
 
@@ -692,13 +692,13 @@ resource "kubernetes_deployment" "nginx" {
                     # mount config
                     volume_mount {
                         mount_path = "/etc/bitwarden/nginx"
-                        name = "config"
+                        name = "bitwarden-nginx_config"
                     }
 
                     # mount certs
                     volume_mount {
                         mount_path = "/etc/ssl/${var.bitwarden-host}"
-                        name = "certs"
+                        name = "bitwarden-nginx_certs"
                     }
                 }
             }      
@@ -721,7 +721,7 @@ resource "kubernetes_deployment" "admin" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool, kubernetes_deployment.mssql]
+    depends_on = [var.node_pool, kubernetes_deployment.mssql, kubernetes_config_map.nginx_config, kubernetes_config_map.nginx_certs]
 
     spec {
         # we need only one replica of the service
@@ -777,9 +777,9 @@ resource "kubernetes_deployment" "admin" {
 
 
 # define certs
-resource "kubernetes_config_map" "tls-certs" {
+resource "kubernetes_config_map" "nginx_certs" {
     metadata {
-        name = "tls-certs"
+        name = "bitwarden-nginx_certs"
     }
 
     data = {
@@ -790,9 +790,9 @@ resource "kubernetes_config_map" "tls-certs" {
 }
 
 # define config
-resource "kubernetes_config_map" "nginx" {
+resource "kubernetes_config_map" "nginx_config" {
     metadata {
-        name = "nginx"
+        name = "bitwarden-nginx_config"
     }
 
     data = {
