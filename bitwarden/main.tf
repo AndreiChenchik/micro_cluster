@@ -61,8 +61,8 @@ resource "kubernetes_config_map" "uid_env" {
     }
 
     data = {
-        LOCAL_UID   = 0
-        LOCAL_GID   = 0
+        LOCAL_UID   = "0"
+        LOCAL_GID   = "0"
     }
 }
 
@@ -135,6 +135,13 @@ resource "kubernetes_deployment" "mssql" {
             }
 
             spec {
+                volume {
+                    name= "persistent-data"
+                    gce_persistent_disk {
+                        pd_name = "bitwarden-mssql-data"
+                    }
+                }
+
                 container {
                     name    = "bitwarden-mssql"
                     image   = "bitwarden/mssql:latest"  
@@ -156,8 +163,14 @@ resource "kubernetes_deployment" "mssql" {
                         config_map_ref {
                             name = "mssql.override.env"
                         }
-                    }          
-                }
+                    }  
+                    
+                    # mount disk to container
+                    volume_mount {
+                        mount_path = "/var/opt/mssql/data"
+                        name = "persistent-data"
+                    }        
+               }
             }      
         }
     }
