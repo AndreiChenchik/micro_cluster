@@ -660,11 +660,11 @@ resource "kubernetes_deployment" "nginx" {
             spec {
                  # attach certs
                 volume {
-                    name= "birwarden-nginx-certs"
+                    name= "bitwarden-nginx-certs"
 
                     config_map {
                         default_mode = "0777"
-                        name = "birwarden-nginx-certs"
+                        name = "bitwarden-nginx-certs"
                     }
                 }
                 
