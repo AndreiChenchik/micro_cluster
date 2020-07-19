@@ -13,6 +13,11 @@ variable "bitwarden-reply_to" {}
 variable "bitwarden-cert_key" {}
 variable "bitwarden-cert" {}
 variable "bitwarden-cert_ca" {}
+variable "bitwarden-smtp_host" {}
+variable "bitwarden-smtp_port" {}
+variable "bitwarden-smtp_ssl" {}
+variable "bitwarden-smtp_username" {}
+variable "bitwarden-smtp_password" {}
 
 #internal variables
 variable "name" {

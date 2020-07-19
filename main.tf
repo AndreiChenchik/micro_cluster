@@ -136,6 +136,11 @@ module "bitwarden" {
     bitwarden-cert_ca                   = acme_certificate.cert.issuer_pem
     bitwarden-host                      = "${var.dns-subdomain}.${var.dns-zone}"
     bitwarden-port                      = var.bitwarden-port
+    bitwarden-smtp_host                 = var.bitwarden-smtp_host
+    bitwarden-smtp_port                 = var.bitwarden-smtp_port
+    bitwarden-smtp_ssl                  = var.bitwarden-smtp_ssl
+    bitwarden-smtp_username             = var.bitwarden-smtp_username
+    bitwarden-smtp_password             = var.bitwarden-smtp_password
 }
 
 # combine all ports

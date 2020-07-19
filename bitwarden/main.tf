@@ -30,11 +30,11 @@ resource "kubernetes_config_map" "global_override_env" {
         globalSettings__yubico__clientId                    = "REPLACE"
         globalSettings__yubico__key                         = "REPLACE"
         globalSettings__mail__replyToEmail                  = var.bitwarden-reply_to
-        globalSettings__mail__smtp__host                    = "REPLACE"
-        globalSettings__mail__smtp__port                    = "587"
-        globalSettings__mail__smtp__ssl                     = "false"
-        globalSettings__mail__smtp__username                = "REPLACE"
-        globalSettings__mail__smtp__password                = "REPLACE"
+        globalSettings__mail__smtp__host                    = var.bitwarden-smtp_host
+        globalSettings__mail__smtp__port                    = var.bitwarden-smtp_port
+        globalSettings__mail__smtp__ssl                     = var.bitwarden-smtp_ssl
+        globalSettings__mail__smtp__username                = var.bitwarden-smtp_username
+        globalSettings__mail__smtp__password                = var.bitwarden-smtp_password
         globalSettings__disableUserRegistration             = "false"
         globalSettings__hibpApiKey                          = "REPLACE"
         adminSettings__admins                               = ""

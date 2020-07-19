@@ -33,6 +33,11 @@ variable "bitwarden-mssql_password" {}
 variable "bitwarden-identity_key" {}
 variable "bitwarden-duo_key" {}
 variable "bitwarden-port" {}
+variable "bitwarden-smtp_host" {}
+variable "bitwarden-smtp_port" {}
+variable "bitwarden-smtp_ssl" {}
+variable "bitwarden-smtp_username" {}
+variable "bitwarden-smtp_password" {}
 
 variable "cluster_name" {
     default = "default-cluster"
