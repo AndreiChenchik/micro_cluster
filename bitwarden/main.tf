@@ -658,7 +658,14 @@ resource "kubernetes_deployment" "nginx" {
             }
 
             spec {
-                 # attach certs
+                volume {
+                    name= "persistent-logs"
+                    gce_persistent_disk {
+                        pd_name = "bitwarden-nginx-logs"
+                    }
+                }
+
+                # attach certs
                 volume {
                     name= "bitwarden-nginx-certs"
 
@@ -699,6 +706,12 @@ resource "kubernetes_deployment" "nginx" {
                     volume_mount {
                         mount_path = "/etc/ssl/${var.bitwarden-host}"
                         name = "bitwarden-nginx-certs"
+                    }
+
+                    # mount disk to container
+                    volume_mount {
+                        mount_path = "/var/log/nginx"
+                        name = "persistent-logs"
                     }
                 }
             }      
