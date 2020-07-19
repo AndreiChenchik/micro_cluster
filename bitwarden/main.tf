@@ -637,7 +637,7 @@ resource "kubernetes_deployment" "nginx" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool, kubernetes_service.web, kubernetes_deployment.api, kubernetes_deployment.identity, kubernetes_deployment.admin, kubernetes_config_map.nginx_config, kubernetes_config_map.nginx_certs]
+    depends_on = [var.node_pool, kubernetes_service.web, kubernetes_service.api, kubernetes_service.identity, kubernetes_service.admin, kubernetes_config_map.nginx_config, kubernetes_config_map.nginx_certs]
 
     spec {
         # we need only one replica of the service
@@ -869,6 +869,161 @@ resource "kubernetes_service" "web" {
         port {
             # expose main port of our container
             name = "web-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "icons" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-icons"
+    }
+
+    depends_on = [kubernetes_deployment.icons]
+    
+    spec {
+        selector = {
+            app = "bitwarden-icons"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "icons-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "notifications" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-notifications"
+    }
+
+    depends_on = [kubernetes_deployment.notifications]
+    
+    spec {
+        selector = {
+            app = "bitwarden-notifications"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "notifications-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "events" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-events"
+    }
+
+    depends_on = [kubernetes_deployment.events]
+    
+    spec {
+        selector = {
+            app = "bitwarden-events"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "events-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "admin" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-admin"
+    }
+
+    depends_on = [kubernetes_deployment.admin]
+    
+    spec {
+        selector = {
+            app = "bitwarden-admin"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "admin-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "attachments" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-attachments"
+    }
+
+    depends_on = [kubernetes_deployment.attachments]
+    
+    spec {
+        selector = {
+            app = "bitwarden-attachments"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "attachments-port"
+            port = 5000
+        } 
+    }
+}
+
+
+resource "kubernetes_service" "identity" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-identity"
+    }
+
+    depends_on = [kubernetes_deployment.identity]
+    
+    spec {
+        selector = {
+            app = "bitwarden-identity"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "identity-port"
+            port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "api" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-api"
+    }
+
+    depends_on = [kubernetes_deployment.api]
+    
+    spec {
+        selector = {
+            app = "bitwarden-api"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "api-port"
             port = 5000
         } 
     }
