@@ -660,7 +660,7 @@ resource "kubernetes_deployment" "nginx" {
             spec {
                  # attach certs
                 volume {
-                    name= "birwarden-nginx_certs"
+                    name= "birwarden-nginx-certs"
 
                     config_map {
                         default_mode = "0777"
@@ -670,7 +670,7 @@ resource "kubernetes_deployment" "nginx" {
                 
                 # attach config
                 volume {
-                    name= "bitwarden-nginx_config"
+                    name= "bitwarden-nginx-config"
                     
                     config_map {
                         default_mode = "0777"
@@ -692,13 +692,13 @@ resource "kubernetes_deployment" "nginx" {
                     # mount config
                     volume_mount {
                         mount_path = "/etc/bitwarden/nginx"
-                        name = "bitwarden-nginx_config"
+                        name = "bitwarden-nginx-config"
                     }
 
                     # mount certs
                     volume_mount {
                         mount_path = "/etc/ssl/${var.bitwarden-host}"
-                        name = "bitwarden-nginx_certs"
+                        name = "bitwarden-nginx-certs"
                     }
                 }
             }      
