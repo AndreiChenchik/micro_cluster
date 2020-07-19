@@ -16,7 +16,7 @@ resource "kubernetes_config_map" "global_override_env" {
         globalSettings__baseServiceUri__identity            = "https://${var.bitwarden-host}:${var.bitwarden-port}/identity"
         globalSettings__baseServiceUri__admin               = "https://${var.bitwarden-host}:${var.bitwarden-port}/admin"
         globalSettings__baseServiceUri__notifications       = "https://${var.bitwarden-host}:${var.bitwarden-port}/notifications"
-        globalSettings__sqlServer__connectionString         = "Data Source=tcp:mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password=${var.bitwarden-mssql_password};MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
+        globalSettings__sqlServer__connectionString         = "Data Source=tcp:bitwarden-mssql,1433;Initial Catalog=vault;Persist Security Info=False;User ID=sa;Password=${var.bitwarden-mssql_password};MultipleActiveResultSets=False;Connect Timeout=30;Encrypt=True;TrustServerCertificate=True"
         globalSettings__identityServer__certificatePassword = var.bitwarden-identity_cert_password
         globalSettings__attachment__baseDirectory           = "/etc/bitwarden/core/attachments"
         globalSettings__attachment__baseUrl                 = "https://${var.bitwarden-host}:${var.bitwarden-port}/attachments"
@@ -721,7 +721,7 @@ resource "kubernetes_deployment" "admin" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool, kubernetes_deployment.mssql]
+    depends_on = [var.node_pool, kubernetes_service.mssql]
 
     spec {
         # we need only one replica of the service
@@ -1025,6 +1025,28 @@ resource "kubernetes_service" "api" {
             # expose main port of our container
             name = "api-port"
             port = 5000
+        } 
+    }
+}
+
+resource "kubernetes_service" "mssql" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-mssql"
+    }
+
+    depends_on = [kubernetes_deployment.mssql]
+    
+    spec {
+        selector = {
+            app = "bitwarden-mssql"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "mssql-port"
+            port = 1433
         } 
     }
 }
