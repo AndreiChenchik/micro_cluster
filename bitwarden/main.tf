@@ -637,7 +637,7 @@ resource "kubernetes_deployment" "nginx" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool]
+    depends_on = [var.node_pool, , kubernetes_service.web, , kubernetes_deployment.api, , kubernetes_deployment.identity, , kubernetes_deployment.admin]
 
     spec {
         # we need only one replica of the service
@@ -721,7 +721,7 @@ resource "kubernetes_deployment" "admin" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool]
+    depends_on = [var.node_pool, kubernetes_deployment.mssql]
 
     spec {
         # we need only one replica of the service
@@ -823,7 +823,7 @@ resource "kubernetes_config_map" "identity" {
 
 
 # add nodeport to drive external traffic to pod
-resource "kubernetes_service" "main" {
+resource "kubernetes_service" "external" {
     # create resource only if there it's required
     count = local.onoff_switch
 
@@ -848,5 +848,28 @@ resource "kubernetes_service" "main" {
         } 
 
         type = "NodePort"
+    }
+}
+
+
+resource "kubernetes_service" "web" {
+    count = local.onoff_switch
+
+    metadata {
+        name = "bitwarden-web"
+    }
+
+    depends_on = [kubernetes_deployment.web]
+    
+    spec {
+        selector = {
+            app = "bitwarden-web"
+        }
+        
+        port {
+            # expose main port of our container
+            name = "web-port"
+            port = 5000
+        } 
     }
 }
