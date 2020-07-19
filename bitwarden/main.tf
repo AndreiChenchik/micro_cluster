@@ -664,7 +664,7 @@ resource "kubernetes_deployment" "nginx" {
 
                     config_map {
                         default_mode = "0777"
-                        name = "birwarden-nginx_certs"
+                        name = "birwarden-nginx-certs"
                     }
                 }
                 
@@ -674,7 +674,7 @@ resource "kubernetes_deployment" "nginx" {
                     
                     config_map {
                         default_mode = "0777"
-                        name = "bitwarden-nginx_config"
+                        name = "bitwarden-nginx-config"
                     }
                 }
 
@@ -721,7 +721,7 @@ resource "kubernetes_deployment" "admin" {
     }
     
     # wait for gke node pool
-    depends_on = [var.node_pool, kubernetes_deployment.mssql, kubernetes_config_map.nginx-config, kubernetes_config_map.nginx-certs]
+    depends_on = [var.node_pool, kubernetes_deployment.mssql, kubernetes_config_map.nginx_config, kubernetes_config_map.nginx_certs]
 
     spec {
         # we need only one replica of the service
@@ -777,9 +777,9 @@ resource "kubernetes_deployment" "admin" {
 
 
 # define certs
-resource "kubernetes_config_map" "nginx-certs" {
+resource "kubernetes_config_map" "nginx_certs" {
     metadata {
-        name = "bitwarden-nginx_certs"
+        name = "bitwarden-nginx-certs"
     }
 
     data = {
@@ -790,9 +790,9 @@ resource "kubernetes_config_map" "nginx-certs" {
 }
 
 # define config
-resource "kubernetes_config_map" "nginx-config" {
+resource "kubernetes_config_map" "nginx_config" {
     metadata {
-        name = "bitwarden-nginx_config"
+        name = "bitwarden-nginx-config"
     }
 
     data = {
