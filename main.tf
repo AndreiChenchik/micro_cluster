@@ -133,7 +133,7 @@ module "bitwarden" {
     bitwarden-reply_to                  = var.email 
     bitwarden-cert                      = join("", [acme_certificate.cert.certificate_pem, acme_certificate.cert.issuer_pem])
     bitwarden-cert_key                  = acme_certificate.cert.private_key_pem
-    bitwarden-cert_ca                   = join("", [var.acme-ca-crt, acme_certificate.cert.issuer_pem])
+    bitwarden-cert_ca                   = acme_certificate.cert.issuer_pem
     bitwarden-host                      = "${var.dns-subdomain}.${var.dns-zone}"
     bitwarden-port                      = var.bitwarden-port
     bitwarden-smtp_host                 = var.bitwarden-smtp_host
