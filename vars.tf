@@ -38,6 +38,7 @@ variable "bitwarden-smtp_port" {}
 variable "bitwarden-smtp_ssl" {}
 variable "bitwarden-smtp_username" {}
 variable "bitwarden-smtp_password" {}
+variable "acme-ca-crt" {}
 
 variable "cluster_name" {
     default = "default-cluster"
