@@ -141,6 +141,7 @@ module "bitwarden" {
     bitwarden-smtp_ssl                  = var.bitwarden-smtp_ssl
     bitwarden-smtp_username             = var.bitwarden-smtp_username
     bitwarden-smtp_password             = var.bitwarden-smtp_password
+    bitwarden-identity_pfx              = var.bitwarden-identity_pfx
 }
 
 # combine all ports

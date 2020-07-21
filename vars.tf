@@ -39,6 +39,7 @@ variable "bitwarden-smtp_ssl" {}
 variable "bitwarden-smtp_username" {}
 variable "bitwarden-smtp_password" {}
 variable "acme-ca-crt" {}
+variable "bitwarden-identity_pfx" {}
 
 variable "cluster_name" {
     default = "default-cluster"

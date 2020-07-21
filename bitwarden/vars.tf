@@ -18,6 +18,7 @@ variable "bitwarden-smtp_port" {}
 variable "bitwarden-smtp_ssl" {}
 variable "bitwarden-smtp_username" {}
 variable "bitwarden-smtp_password" {}
+variable "bitwarden-identity_pfx" {}
 
 #internal variables
 variable "name" {
