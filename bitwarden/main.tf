@@ -843,7 +843,7 @@ resource "kubernetes_config_map" "identity" {
         name = "identity"
     }
     binary_data = {
-        "identity.pfx" = base64decode("${var.bitwarden-identity_pfx}")
+        "identity.pfx" = "${filebase64("${path.module}/identity.bin")}"
     }
 }
 
